@@ -803,7 +803,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
     setTrackFill(v);
 
     // volume — UI shows 0–100% but actual max is 75%
-    audio.volume=p*0.60;
+    audio.volume=p*0.35;
     if(!audioStarted&&v>0){
       audioStarted=true;
       audio.currentTime=43;
@@ -1187,13 +1187,13 @@ const scroll=(function(){
 
   slider.addEventListener('input',function(){
     const v=parseInt(this.value);
-    audio.volume=(v/100)*0.60;
+    audio.volume=(v/100)*0.35;
     fill(v);
   });
 
   // keep slider in sync if audio.volume is changed elsewhere (e.g. loadTrack)
   audio.addEventListener('volumechange',()=>{
-    const v=Math.round((audio.volume/0.60)*100);
+    const v=Math.round((audio.volume/0.35)*100);
     slider.value=Math.min(v,100);
     fill(Math.min(v,100));
   });
