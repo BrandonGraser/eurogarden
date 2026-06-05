@@ -802,8 +802,8 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
     pctEl.textContent=v;
     setTrackFill(v);
 
-    // volume
-    audio.volume=p;
+    // volume — UI shows 0–100% but actual max is 75%
+    audio.volume=p*0.75;
     if(!audioStarted&&v>0){
       audioStarted=true;
       audio.currentTime=43;
