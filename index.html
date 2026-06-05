@@ -992,6 +992,8 @@ const scroll=(function(){
       /* hero / previous panel scales back slightly for depth */
       gsap.to(SECTION_IDS[prev],{scale:.96,duration:dur,ease});
     } else {
+      /* ensure destination is in position (may have been skipped by a direct nav jump) */
+      gsap.set(SECTION_IDS[idx],{yPercent:0,scale:1});
       /* backward — current panel drops away, revealing the one beneath */
       gsap.to(SECTION_IDS[prev],{
         yPercent:100,duration:dur,ease,
@@ -1000,8 +1002,6 @@ const scroll=(function(){
           busy=false;
         }
       });
-      /* restore scale on the panel being revealed */
-      gsap.to(SECTION_IDS[idx],{scale:1,duration:dur,ease});
       if(!instant) setTimeout(()=>animateIn(idx),150);
     }
   }
