@@ -1238,16 +1238,19 @@ const scroll=(function(){
 
 /* ── AUDIO SOURCE PRELOAD ─────────────────── */
 (function(){
-  const first=TRACKS[0];
-  if(!first?.hasFile) return;
+  const target=TRACKS.find(t=>t.isDefault&&t.hasFile)||TRACKS.find(t=>t.hasFile);
+  if(!target) return;
   const req=indexedDB.open('eurogarden_cms',3);
   req.onsuccess=e=>{
     const db=e.target.result;
     if(!db.objectStoreNames.contains('tracks')) return;
-    const r=db.transaction('tracks','readonly').objectStore('tracks').get(first.id);
+    const r=db.transaction('tracks','readonly').objectStore('tracks').get(target.id);
     r.onsuccess=()=>{
       if(r.result?.data){
         document.getElementById('audio').src=URL.createObjectURL(r.result.data);
+        // seed mini-player with this track's info
+        document.getElementById('mpN').textContent=target.name.toUpperCase();
+        document.getElementById('mpA').textContent=target.artist.toUpperCase();
       }
     };
   };
