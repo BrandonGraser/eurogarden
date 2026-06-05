@@ -649,8 +649,6 @@ function openArtistModal(idx){
   document.getElementById('a_ra').value=a?.links?.ra||'';
   document.getElementById('a_ig').value=a?.links?.instagram||'';
   document.getElementById('a_sp').value=a?.links?.spotify||'';
-  selGrad=a?.grad||GRAD_PRESETS[0];
-  document.querySelectorAll('.gp').forEach(p=>p.classList.toggle('sel',p.title===selGrad));
   const prev=document.getElementById('photoPreview');
   prev.style.display='none'; document.getElementById('photoIcon').style.display='block'; document.getElementById('photoLbl').style.display='block';
   document.getElementById('artistPhotoIn').value='';
