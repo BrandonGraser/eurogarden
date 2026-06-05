@@ -969,6 +969,7 @@ const scroll=(function(){
 
   function goTo(idx,instant){
     if(idx<0||idx>=SECTION_IDS.length) return;
+    if(idx===current&&!instant) return;
     if(busy&&!instant) return;
 
     busy=true;
