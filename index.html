@@ -1157,17 +1157,86 @@ const scroll=(function(){
   });
 })();
 
+/* ── ARTIST POPUP ─────────────────────────── */
+(function(){
+  const popup=document.getElementById('artist-popup');
+  const backdrop=document.getElementById('apBackdrop');
+  const close=document.getElementById('apClose');
+  function closePopup(){popup.classList.remove('open');}
+  close.addEventListener('click',closePopup);
+  backdrop.addEventListener('click',closePopup);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup();});
+
+  function getPhotoFromDB(id){
+    return new Promise(res=>{
+      const req=indexedDB.open('eurogarden_cms',2);
+      req.onsuccess=e=>{
+        const db=e.target.result;
+        if(!db.objectStoreNames.contains('photos')) return res(null);
+        const tx=db.transaction('photos','readonly');
+        const r=tx.objectStore('photos').get(id);
+        r.onsuccess=()=>res(r.result?.data||null);
+        r.onerror=()=>res(null);
+      };
+      req.onerror=()=>res(null);
+    });
+  }
+
+  window.openArtistPopup=async function(a){
+    document.getElementById('apName').textContent=a.name;
+    document.getElementById('apLocation').textContent=a.location||'';
+    document.getElementById('apTags').innerHTML=a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('');
+    document.getElementById('apBio').textContent=a.fullBio||a.bio||'';
+
+    // Links
+    const linksEl=document.getElementById('apLinks');
+    linksEl.innerHTML='';
+    const addLink=(label,url)=>{
+      if(!url) return;
+      const a2=document.createElement('a');
+      a2.className='ap-link'; a2.href=url; a2.target='_blank'; a2.rel='noopener';
+      a2.textContent=label; linksEl.appendChild(a2);
+    };
+    addLink('Bandcamp',a.links?.bandcamp);
+    addLink('RA',a.links?.ra);
+    addLink('Instagram',a.links?.instagram);
+    addLink('Spotify',a.links?.spotify);
+    if(a.links?.bandcamp||a.links?.ra||a.links?.instagram||a.links?.spotify){/* added */}
+    else{const r=document.createElement('a');r.className='ap-link na';r.href='#releases';r.textContent='Releases';linksEl.appendChild(r);}
+
+    // Photo
+    const photoBg=document.getElementById('apPhotoBg');
+    photoBg.innerHTML='';
+    if(a.hasPhoto){
+      const data=await getPhotoFromDB(a.id);
+      if(data){
+        const img=document.createElement('img');img.src=data;photoBg.appendChild(img);
+      } else {
+        photoBg.style.background=a.grad;
+        photoBg.innerHTML=`<svg width="50" height="50" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg>`;
+      }
+    } else {
+      photoBg.style.background=a.grad;
+      photoBg.innerHTML=`<svg width="50" height="50" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg>`;
+    }
+
+    popup.classList.add('open');
+  };
+})();
+
 /* ── ARTIST CAROUSEL ──────────────────────── */
 (function(){
   const g=document.getElementById('artistGrid');
+  let dragDist=0;
   ARTISTS.forEach(a=>{
-    const c=document.createElement('div');c.className='ac';
-    c.innerHTML=`<div class="ac-img" style="background:${a.grad}"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg></div><div class="ac-det"><div class="ac-name">${a.name}</div><div class="ac-tags">${a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('')}</div></div><div class="ac-ov"><div class="ao-name">${a.name}</div><div class="ao-tags">${a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('')}</div><p class="ao-bio">${a.bio}</p><div class="ao-links"><a href="#releases" class="ao-link na">Releases</a><a href="#" class="ao-link">Bandcamp</a><a href="#" class="ao-link">RA</a></div></div>`;
+    const c=document.createElement('div');c.className='ac';c.style.cursor='pointer';
+    c.innerHTML=`<div class="ac-img" style="background:${a.grad}"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg></div><div class="ac-det"><div class="ac-name">${a.name}</div><div class="ac-tags">${a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('')}</div></div><div class="ac-ov"><div class="ao-name">${a.name}</div><div class="ao-tags">${a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('')}</div><p class="ao-bio">${a.bio}</p><div class="ao-links"><span class="ao-link" style="opacity:.4;cursor:pointer">View Profile →</span></div></div>`;
+    c.addEventListener('click',()=>{if(dragDist<8)window.openArtistPopup(a);});
     g.appendChild(c);
   });
-  let id=false,sx=0,sl=0;
-  g.addEventListener('mousedown',e=>{id=true;sx=e.pageX-g.offsetLeft;sl=g.scrollLeft;g.style.cursor='grabbing';});
-  document.addEventListener('mousemove',e=>{if(!id)return;e.preventDefault();g.scrollLeft=sl-(e.pageX-g.offsetLeft-sx)*1.2;},{passive:false});
+  let id=false,sx=0,sl=0,sd=0;
+  g.addEventListener('mousedown',e=>{id=true;sx=e.pageX-g.offsetLeft;sl=g.scrollLeft;sd=e.pageX;g.style.cursor='grabbing';dragDist=0;});
+  document.addEventListener('mousemove',e=>{if(!id)return;e.preventDefault();dragDist=Math.abs(e.pageX-sd);g.scrollLeft=sl-(e.pageX-g.offsetLeft-sx)*1.2;},{passive:false});
   document.addEventListener('mouseup',()=>{id=false;g.style.cursor='grab';});
 })();
 
