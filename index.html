@@ -1187,7 +1187,7 @@ const scroll=(function(){
 
   slider.addEventListener('input',function(){
     const v=parseInt(this.value);
-    audio.volume=v/100;
+    audio.volume=(v/100)*0.75;
     fill(v);
   });
 
