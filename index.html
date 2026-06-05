@@ -143,12 +143,11 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 }
 #hero .panel-inner::before{content:'';position:absolute;top:0;left:50%;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--dim),transparent);pointer-events:none;z-index:1}
 #hero .panel-inner::after{
-  content:'';position:absolute;inset:-10%;
-  background:url('flower.png') center/cover no-repeat;
-  opacity:.07;
-  filter:blur(18px) saturate(0);
+  content:'';position:absolute;inset:0;
+  background:url('flower.png') center/contain no-repeat;
+  opacity:.18;
+  filter:blur(6px) saturate(0);
   pointer-events:none;z-index:0;
-  transform:scale(1.1);
 }
 .hero-word{z-index:2;position:relative}
 .hw-main{font-family:var(--font-d);font-size:clamp(4.5rem,12vw,12rem);line-height:.85;letter-spacing:-.01em;color:var(--white)}
