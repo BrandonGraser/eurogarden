@@ -141,8 +141,16 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   align-items:center;padding:7rem 5vw 5rem;gap:4vw;
   position:relative;overflow:hidden;
 }
-#hero .panel-inner::before{content:'';position:absolute;top:0;left:50%;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--dim),transparent);pointer-events:none}
-.hero-word{z-index:2}
+#hero .panel-inner::before{content:'';position:absolute;top:0;left:50%;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--dim),transparent);pointer-events:none;z-index:1}
+#hero .panel-inner::after{
+  content:'';position:absolute;inset:-10%;
+  background:url('flower.png') center/cover no-repeat;
+  opacity:.07;
+  filter:blur(18px) saturate(0);
+  pointer-events:none;z-index:0;
+  transform:scale(1.1);
+}
+.hero-word{z-index:2;position:relative}
 .hw-main{font-family:var(--font-d);font-size:clamp(4.5rem,12vw,12rem);line-height:.85;letter-spacing:-.01em;color:var(--white)}
 .hw-sub{font-family:var(--font-c);font-weight:900;font-size:clamp(1.3rem,2vw,1.6rem);letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-top:1.4rem}
 .hw-rule{width:100%;height:1px;background:var(--dim);margin:1.2rem 0}
@@ -151,7 +159,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 .hw-cta:hover{background:var(--white);color:var(--black)}
 
 /* vinyl */
-.vinyl-wrap{position:relative;display:flex;justify-content:center;align-items:center;z-index:2;padding-bottom:7rem}
+.vinyl-wrap{position:relative;display:flex;justify-content:center;align-items:center;z-index:2;padding-bottom:7rem;isolation:isolate}
 .vinyl-scene{position:relative;width:clamp(230px,34vw,450px);height:clamp(230px,34vw,450px)}
 .prg-svg{position:absolute;inset:-10px;width:calc(100% + 20px);height:calc(100% + 20px);transform:rotate(-90deg);pointer-events:none;z-index:10}
 .prg-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:1.5}
