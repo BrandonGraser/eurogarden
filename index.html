@@ -217,9 +217,10 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 @keyframes lineUp{to{transform:translateY(0)}}
 
 /* ── RELEASES ────────────────────── */
-#releases .panel-inner{padding:4.5rem 5vw 0;overflow:hidden}
-.releases-hd{margin-bottom:1rem}
-.tracks-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--dim);overflow:hidden}
+#releases .panel-inner{padding:4.5rem 5vw 0;overflow:hidden;display:flex;flex-direction:column}
+.releases-hd{margin-bottom:1rem;flex-shrink:0}
+.tracks-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--dim);overflow-y:auto;scrollbar-width:none;flex:1;min-height:0}
+.tracks-grid::-webkit-scrollbar{display:none}
 .track{
   position:relative;display:grid;
   grid-template-columns:auto 2.8rem 1fr auto;
