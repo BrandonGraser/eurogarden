@@ -372,6 +372,7 @@ function openIDB(){
       const d=e.target.result;
       if(!d.objectStoreNames.contains('tracks')) d.createObjectStore('tracks',{keyPath:'id'});
       if(!d.objectStoreNames.contains('photos')) d.createObjectStore('photos',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('covers')) d.createObjectStore('covers',{keyPath:'id'});
     };
     r.onsuccess=e=>{idb=e.target.result;res(idb);};
     r.onerror=()=>rej(r.error);
