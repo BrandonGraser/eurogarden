@@ -1092,6 +1092,8 @@ const scroll=(function(){
   play=function(){origPlay();updatePlayBtn();};
   stop=function(){origStop();updatePlayBtn();};
 
+  audio.addEventListener('play',()=>{const b=document.getElementById('mpPlay');if(b)b.textContent='⏸';});
+  audio.addEventListener('pause',()=>{const b=document.getElementById('mpPlay');if(b)b.textContent='▶';});
   disc.addEventListener('click',()=>playing?stop():play());
   disc.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();playing?stop():play();}});
   audio.addEventListener('timeupdate',()=>{if(audio.duration)prog((audio.currentTime/audio.duration)*100);});
