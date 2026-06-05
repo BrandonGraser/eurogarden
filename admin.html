@@ -554,7 +554,8 @@ function saveTrack(){
     dur,
     g1:existing?.g1||'#0d0d1e', g2:existing?.g2||'#16213e',
     hasFile:pendingBlob?true:(existing?.hasFile||false),
-    hasCover:pendingCover?true:(existing?.hasCover||false)};
+    hasCover:pendingCover?true:(existing?.hasCover||false),
+    isDefault:document.getElementById('t_isDefault').checked};
   // enforce only-one-default
   if(updated.isDefault) tracks.forEach((t,i)=>{if(i!==editTIdx) t.isDefault=false;});
   if(pendingBlob) idbPut('tracks',id,pendingBlob);
