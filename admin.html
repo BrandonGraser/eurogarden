@@ -239,20 +239,15 @@ a{color:inherit;text-decoration:none}
       </div>
     </div>
 
-    <div class="frow">
-      <div class="fg">
-        <label class="fl">Track Art Color 1</label>
-        <div class="color-row">
-          <input type="color" class="cpick" id="t_g1c" value="#0d0d1e" oninput="syncC('g1')">
-          <input type="text" class="fi ctxt" id="t_g1t" value="#0d0d1e" oninput="syncCT('g1')">
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">Track Art Color 2</label>
-        <div class="color-row">
-          <input type="color" class="cpick" id="t_g2c" value="#16213e" oninput="syncC('g2')">
-          <input type="text" class="fi ctxt" id="t_g2t" value="#16213e" oninput="syncCT('g2')">
-        </div>
+    <div class="fg">
+      <label class="fl">Cover Art (3000 × 3000 recommended)</label>
+      <div class="drop" id="coverDrop">
+        <div class="drop-icon">🖼</div>
+        <div class="drop-txt">Drop image here or click to browse</div>
+        <div class="drop-sub">JPG or PNG · Square crop recommended</div>
+        <div class="drop-file" id="cv_file" style="display:none"></div>
+        <img id="cv_preview" style="display:none;max-height:120px;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)">
+        <input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" id="coverFileIn" onchange="handleCoverFile(this)">
       </div>
     </div>
 
