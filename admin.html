@@ -465,7 +465,7 @@ function renderTracks(){
       row.className='tr';
       row.innerHTML=`
         <div class="tr-n">${n}</div>
-        <div><div class="tr-name">${esc(t.name)}</div><div class="tr-meta">${esc(t.album)} · ${esc(t.artist)}</div></div>
+        <div><div class="tr-name">${esc(t.name)}${t.isDefault?` <span class="tr-default-badge">DEFAULT</span>`:''}</div><div class="tr-meta">${esc(t.album)} · ${esc(t.artist)}</div></div>
         <div class="tr-dur">${t.dur||'—'}</div>
         <div class="tr-dot${t.hasFile?' ok':''}" title="${t.hasFile?'MP3 uploaded':'No MP3 file'}"></div>
         <div class="tr-acts">
