@@ -1145,20 +1145,22 @@ const scroll=(function(){
     // Cover art in mini-player
     const coverImg=document.getElementById('mpCoverImg');
     const fallback=document.querySelector('.mp-disc-fallback');
+    const showMpCover=(dataUrl)=>{
+      if(dataUrl){coverImg.src=dataUrl;coverImg.style.display='block';if(fallback)fallback.style.display='none';}
+      else{coverImg.style.display='none';if(fallback)fallback.style.display='';}
+    };
     if(t.hasCover){
       const req=indexedDB.open('eurogarden_cms',3);
       req.onsuccess=e=>{
         const db=e.target.result;
-        if(!db.objectStoreNames.contains('covers')){coverImg.style.display='none';if(fallback)fallback.style.display='';return;}
+        if(!db.objectStoreNames.contains('covers')){showMpCover(null);return;}
         const r=db.transaction('covers','readonly').objectStore('covers').get(t.id);
-        r.onsuccess=()=>{
-          if(r.result?.data){coverImg.src=r.result.data;coverImg.style.display='block';if(fallback)fallback.style.display='none';}
-          else{coverImg.style.display='none';if(fallback)fallback.style.display='';}
-        };
+        r.onsuccess=()=>showMpCover(r.result?.data||null);
+        r.onerror=()=>showMpCover(null);
       };
+      req.onerror=()=>showMpCover(null);
     } else {
-      coverImg.style.display='none';
-      if(fallback) fallback.style.display='';
+      showMpCover(null);
     }
     if(t.hasFile){
       const blob=await getTrackBlob(t.id);
