@@ -599,10 +599,15 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 </nav>
 
 <div id="mini-player">
-  <div class="mp-disc"></div>
+  <div class="mp-disc" id="mpDisc"></div>
   <div class="mp-text">
-    <div class="mp-name" id="mpN">MAYBE</div>
-    <div class="mp-artist" id="mpA">SAiiLOR</div>
+    <div class="mp-name" id="mpN">—</div>
+    <div class="mp-artist" id="mpA">SELECT A TRACK</div>
+  </div>
+  <div class="mp-controls">
+    <button class="mp-btn" id="mpPrev" title="Previous">&#9664;&#9664;</button>
+    <button class="mp-btn active" id="mpPlay" title="Play / Pause">&#9654;</button>
+    <button class="mp-btn" id="mpNext" title="Next">&#9654;&#9654;</button>
   </div>
 </div>
 
