@@ -1055,12 +1055,32 @@ const scroll=(function(){
   audio.addEventListener('timeupdate',()=>{if(audio.duration)prog((audio.currentTime/audio.duration)*100);});
   audio.addEventListener('ended',()=>{stop();prog(0);});
   mp.addEventListener('click',()=>playing?stop():play());
-  window.loadTrack=function(t){
+  function getTrackBlob(id){
+    return new Promise(res=>{
+      const req=indexedDB.open('eurogarden_cms',2);
+      req.onsuccess=e=>{
+        const db=e.target.result;
+        if(!db.objectStoreNames.contains('tracks')) return res(null);
+        const tx=db.transaction('tracks','readonly');
+        const r=tx.objectStore('tracks').get(id);
+        r.onsuccess=()=>res(r.result?.data||null);
+        r.onerror=()=>res(null);
+      };
+      req.onerror=()=>res(null);
+    });
+  }
+  window.loadTrack=async function(t){
     stop();
     vln.textContent=t.name.toUpperCase();vla.textContent=t.artist.toUpperCase();
     lbl.textContent=t.name.substring(0,12).toUpperCase();
     document.getElementById('mpN').textContent=t.name.toUpperCase();
     document.getElementById('mpA').textContent=t.artist.toUpperCase();
+    if(t.hasFile){
+      const blob=await getTrackBlob(t.id);
+      if(blob) audio.src=URL.createObjectURL(blob);
+    } else {
+      audio.src='music.mp3';
+    }
     audio.currentTime=0;prog(0);
     document.querySelectorAll('.track').forEach(e=>e.classList.remove('active'));
     document.querySelector(`.track[data-id="${t.id}"]`)?.classList.add('active');
