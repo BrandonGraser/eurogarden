@@ -367,7 +367,7 @@ let idb=null;
 function openIDB(){
   return new Promise((res,rej)=>{
     if(idb) return res(idb);
-    const r=indexedDB.open('eurogarden_cms',2);
+    const r=indexedDB.open('eurogarden_cms',3);
     r.onupgradeneeded=e=>{
       const d=e.target.result;
       if(!d.objectStoreNames.contains('tracks')) d.createObjectStore('tracks',{keyPath:'id'});
