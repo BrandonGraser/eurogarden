@@ -418,7 +418,6 @@ document.getElementById('gatePass').addEventListener('keydown',e=>{if(e.key==='E
 function init(){
   try{const d=localStorage.getItem('eg_tracks');tracks=d?JSON.parse(d):[...DEFAULT_TRACKS];}catch{tracks=[...DEFAULT_TRACKS];}
   try{const d=localStorage.getItem('eg_artists');artists=d?JSON.parse(d):[...DEFAULT_ARTISTS];}catch{artists=[...DEFAULT_ARTISTS];}
-  buildGradPresets();
   renderTracks();
   renderArtists();
 }
