@@ -1236,6 +1236,23 @@ const scroll=(function(){
   });
 })();
 
+/* ── AUDIO SOURCE PRELOAD ─────────────────── */
+(function(){
+  const first=TRACKS[0];
+  if(!first?.hasFile) return;
+  const req=indexedDB.open('eurogarden_cms',3);
+  req.onsuccess=e=>{
+    const db=e.target.result;
+    if(!db.objectStoreNames.contains('tracks')) return;
+    const r=db.transaction('tracks','readonly').objectStore('tracks').get(first.id);
+    r.onsuccess=()=>{
+      if(r.result?.data){
+        document.getElementById('audio').src=URL.createObjectURL(r.result.data);
+      }
+    };
+  };
+})();
+
 /* ── MINI PLAYER INIT ─────────────────────── */
 (function(){
   const first=TRACKS[0];
