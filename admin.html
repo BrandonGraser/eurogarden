@@ -502,6 +502,7 @@ function openTrackModal(i){
   if(t?.hasFile){fi.textContent='MP3 on file';fi.style.display='block';fd.textContent='Duration: '+(t.dur||'—');fd.style.display='block';}
   else{fi.style.display='none';fd.style.display='none';}
   document.getElementById('trackFileIn').value='';
+  document.getElementById('t_isDefault').checked=!!(t?.isDefault);
   // Cover art preview
   const cvFile=document.getElementById('cv_file'), cvPrev=document.getElementById('cv_preview');
   cvFile.style.display='none'; cvPrev.style.display='none';
