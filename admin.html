@@ -547,7 +547,26 @@ function saveTrack(){
   showToast(existing?'Song updated':'Song added');
 }
 
-// drag-and-drop on drop zone
+// drag-and-drop on cover drop zone
+const coverDrop=document.getElementById('coverDrop');
+coverDrop.addEventListener('dragover',e=>{e.preventDefault();coverDrop.classList.add('over');});
+coverDrop.addEventListener('dragleave',()=>coverDrop.classList.remove('over'));
+coverDrop.addEventListener('drop',e=>{
+  e.preventDefault(); coverDrop.classList.remove('over');
+  const file=e.dataTransfer.files[0];
+  if(!file||!file.type.startsWith('image/')) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    pendingCover=ev.target.result;
+    document.getElementById('cv_preview').src=pendingCover;
+    document.getElementById('cv_preview').style.display='block';
+    document.getElementById('cv_file').textContent=file.name;
+    document.getElementById('cv_file').style.display='block';
+  };
+  reader.readAsDataURL(file);
+});
+
+// drag-and-drop on MP3 drop zone
 const drop=document.getElementById('trackDrop');
 drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over');});
 drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
