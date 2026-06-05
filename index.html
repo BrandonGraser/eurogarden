@@ -805,7 +805,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
     audio.volume=p*0.35;
     if(!audioStarted&&v>0){
       audioStarted=true;
-      audio.currentTime=43;
+      audio.currentTime=0;
       audio.play().catch(()=>{});
       // sync vinyl state
       document.getElementById('vinylDisc')?.classList.add('playing');
