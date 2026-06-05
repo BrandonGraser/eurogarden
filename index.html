@@ -1061,10 +1061,9 @@ const scroll=(function(){
     const htl=gsap.timeline({defaults:{ease:'power4.out'}});
     htl.to('.vinyl-scene',{opacity:1,scale:1,rotation:0,duration:1.4,delay:.15})
        .to('.hw-main',    {opacity:1,y:0,skewY:0,duration:1.1},'-=1.0')
-       .to('.hw-sub',     {opacity:1,y:0,duration:.6},'-=.5')
-       .to('.hw-rule',    {scaleX:1,duration:.5},'-=.3')
-       .to('.hw-detail',  {opacity:1,y:0,duration:.5},'-=.2')
-       .to('.hw-cta',     {opacity:1,y:0,duration:.5},'-=.1');
+       .to('.hw-rule',    {scaleX:1,duration:.5},'-=.4')
+       .to('.hw-intro',   {opacity:1,y:0,duration:.6},'-=.3')
+       .to('.hw-cta',     {opacity:1,y:0,duration:.5},'-=.2');
   };
 
   return {goTo, getCurrent:()=>current};
