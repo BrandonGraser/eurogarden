@@ -1213,42 +1213,39 @@ const scroll=(function(){
   window.openArtistPopup=async function(a){
     document.getElementById('apName').textContent=a.name;
     document.getElementById('apLocation').textContent=a.location||'';
-    document.getElementById('apTags').innerHTML=a.tags.map(t=>`<span class="ac-tag">${t}</span>`).join('');
+    document.getElementById('apTags').innerHTML=a.tags.map(t=>`<span class="ap-tag">${t}</span>`).join('');
     document.getElementById('apBio').textContent=a.fullBio||a.bio||'';
 
     // Links
     const linksEl=document.getElementById('apLinks');
     linksEl.innerHTML='';
-    const addLink=(label,url)=>{
-      if(!url) return;
+    const addLink=(label,url,cls)=>{
       const a2=document.createElement('a');
-      a2.className='ap-link'; a2.href=url; a2.target='_blank'; a2.rel='noopener';
+      a2.className='ap-link'+(cls?' '+cls:'');
+      if(url){a2.href=url;a2.target='_blank';a2.rel='noopener';}
+      else{a2.style.opacity='.3';a2.style.pointerEvents='none';}
       a2.textContent=label; linksEl.appendChild(a2);
     };
+    addLink('View Releases','#releases','releases-link na');
     addLink('Bandcamp',a.links?.bandcamp);
-    addLink('RA',a.links?.ra);
+    addLink('Resident Advisor',a.links?.ra);
     addLink('Instagram',a.links?.instagram);
     addLink('Spotify',a.links?.spotify);
-    if(a.links?.bandcamp||a.links?.ra||a.links?.instagram||a.links?.spotify){/* added */}
-    else{const r=document.createElement('a');r.className='ap-link na';r.href='#releases';r.textContent='Releases';linksEl.appendChild(r);}
 
     // Photo
     const photoBg=document.getElementById('apPhotoBg');
-    photoBg.innerHTML='';
+    photoBg.innerHTML=''; photoBg.style.background='';
+    const gradFallback=a.grad||'linear-gradient(150deg,#0d0d1a,#1a0d28)';
     if(a.hasPhoto){
       const data=await getPhotoFromDB(a.id);
-      if(data){
-        const img=document.createElement('img');img.src=data;photoBg.appendChild(img);
-      } else {
-        photoBg.style.background=a.grad;
-        photoBg.innerHTML=`<svg width="50" height="50" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg>`;
-      }
+      if(data){const img=document.createElement('img');img.src=data;photoBg.appendChild(img);}
+      else{photoBg.style.background=gradFallback;}
     } else {
-      photoBg.style.background=a.grad;
-      photoBg.innerHTML=`<svg width="50" height="50" viewBox="0 0 60 60" fill="none" style="opacity:.1"><circle cx="30" cy="30" r="26" stroke="white" stroke-width="1.2"/><circle cx="30" cy="30" r="16" stroke="white" stroke-width=".8"/><circle cx="30" cy="30" r="7" stroke="white" stroke-width=".6"/><circle cx="30" cy="30" r="3" fill="white" opacity=".5"/></svg>`;
+      photoBg.style.background=gradFallback;
     }
 
     popup.classList.add('open');
+    document.getElementById('apSheet').scrollTop=0;
   };
 })();
 
