@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EUROGARDEN · Admin</title>
+<style>
+@font-face{font-family:'Aeternus Tall';src:url('fonts/aeternus-tall-vf.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'Aeternus Nano';src:url('fonts/aeternus-nano-vf.ttf') format('truetype');font-weight:100 900;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#000;--white:#fff;--dim:rgba(255,255,255,.1);--dimmer:rgba(255,255,255,.05);
+  --red:#c41e3a;--font-d:'Aeternus Tall',sans-serif;--font-c:'Aeternus Nano',sans-serif;
+}
+html,body{min-height:100%;background:var(--black);color:var(--white);font-family:var(--font-c);}
+a{color:inherit;text-decoration:none}
+
+/* ── GATE ── */
+#gate{position:fixed;inset:0;background:#000;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem}
+#gate.gone{display:none}
+.gate-logo{font-family:var(--font-d);font-weight:800;font-size:2.2rem;letter-spacing:.12em}
+.gate-sub{font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.gate-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-c);font-size:1rem;padding:.55rem 0;width:260px;outline:none;text-align:center;letter-spacing:.15em}
+.gate-input::placeholder{color:rgba(255,255,255,.18)}
+.gate-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-d);font-weight:800;font-size:.75rem;letter-spacing:.3em;padding:.55rem 2rem;cursor:pointer;transition:background .2s,color .2s}
+.gate-btn:hover{background:#fff;color:#000}
+.gate-err{color:var(--red);font-size:.78rem;letter-spacing:.1em;min-height:1rem}
+
+/* ── LAYOUT ── */
+#admin{display:none;flex-direction:column;min-height:100vh}
+#admin.on{display:flex}
+.adm-hd{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(0,0,0,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--dim)}
+.adm-logo{font-family:var(--font-d);font-weight:800;font-size:1.2rem;letter-spacing:.1em}
+.adm-logo em{font-style:normal;color:rgba(255,255,255,.3);font-size:.7rem;letter-spacing:.2em;font-family:var(--font-c);font-weight:400;margin-left:.7rem}
+.hd-right{display:flex;gap:1rem;align-items:center}
+.btn-site{color:rgba(255,255,255,.38);font-size:.75rem;letter-spacing:.15em;transition:color .2s}
+.btn-site:hover{color:#fff}
+.btn-save{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:.75rem;letter-spacing:.25em;padding:.48rem 1.4rem;cursor:pointer;transition:opacity .2s}
+.btn-save:hover{opacity:.82}
+.btn-save.ok{background:#1a3a1a;color:#4caf50}
+
+/* ── TABS ── */
+.adm-tabs{display:flex;border-bottom:1px solid var(--dim);padding:0 2.5rem;background:rgba(0,0,0,.5)}
+.tab-btn{background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.32);font-family:var(--font-d);font-weight:800;font-size:.78rem;letter-spacing:.25em;padding:.9rem 1.2rem;cursor:pointer;transition:color .2s,border-color .2s;text-transform:uppercase}
+.tab-btn.on{color:#fff;border-bottom-color:#fff}
+
+/* ── CONTENT ── */
+.adm-body{flex:1;padding:2.5rem;max-width:1100px;margin:0 auto;width:100%}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--dim)}
+.sec-title{font-family:var(--font-d);font-weight:800;font-size:1.3rem;letter-spacing:.1em}
+.sec-sub{color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:.08em;margin-top:.2rem}
+.btn-add{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.6);font-family:var(--font-c);font-size:.75rem;letter-spacing:.18em;padding:.4rem 1.1rem;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-add:hover{border-color:#fff;color:#fff}
+
+/* ── TRACK ROWS ── */
+.tracks-list{display:flex;flex-direction:column;gap:.4rem}
+.tr{display:grid;grid-template-columns:2.2rem 1fr auto auto auto;align-items:center;gap:1rem;padding:.75rem 1rem;border:1px solid var(--dim);background:var(--dimmer);transition:background .15s}
+.tr:hover{background:rgba(255,255,255,.03)}
+.tr.empty{border-style:dashed;border-color:rgba(255,255,255,.07);background:transparent;cursor:pointer}
+.tr.empty:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.015)}
+.tr-n{font-family:var(--font-d);font-weight:800;color:rgba(255,255,255,.22);font-size:.85rem}
+.tr-name{font-family:var(--font-d);font-weight:800;font-size:.95rem;letter-spacing:.04em}
+.tr-meta{color:rgba(255,255,255,.32);font-size:.75rem;margin-top:.1rem}
+.tr-dur{color:rgba(255,255,255,.38);font-size:.82rem;white-space:nowrap}
+.tr-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0}
+.tr-dot.ok{background:#4caf50}
+.tr-acts{display:flex;gap:.4rem}
+.btn-sm{background:transparent;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.38);font-size:.68rem;letter-spacing:.1em;padding:.28rem .55rem;cursor:pointer;transition:all .2s;font-family:var(--font-c)}
+.btn-sm:hover{border-color:rgba(255,255,255,.45);color:#fff}
+.btn-sm.del:hover{border-color:var(--red);color:var(--red)}
+.tr-empty-lbl{color:rgba(255,255,255,.18);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;grid-column:2/-1}
+
+/* ── ARTIST CARDS ── */
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.aca{border:1px solid var(--dim);background:var(--dimmer);transition:background .15s}
+.aca:hover{background:rgba(255,255,255,.03)}
+.aca-swatch{height:72px}
+.aca-body{padding:1.1rem}
+.aca-name{font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.07em;margin-bottom:.35rem}
+.aca-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem}
+.aca-tag{font-size:.65rem;letter-spacing:.12em;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.14);padding:.08rem .35rem}
+.aca-bio{font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.aca-acts{display:flex;gap:.4rem;margin-top:.9rem}
+.add-card{border:1px dashed rgba(255,255,255,.09);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;min-height:190px;transition:border-color .2s,background .15s}
+.add-card:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.015)}
+.add-card-icon{font-size:1.8rem;color:rgba(255,255,255,.12)}
+.add-card-lbl{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+
+/* ── TAB CONTENT ── */
+.tab-pane{display:none}.tab-pane.on{display:block}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s}
+.overlay.on{opacity:1;pointer-events:all}
+.modal{background:#090909;border:1px solid rgba(255,255,255,.11);width:min(620px,95vw);max-height:90vh;overflow-y:auto;padding:2rem;position:relative;transform:translateY(16px);transition:transform .22s;scrollbar-width:none}
+.overlay.on .modal{transform:translateY(0)}
+.modal::-webkit-scrollbar{display:none}
+.modal-hd{font-family:var(--font-d);font-weight:800;font-size:1.2rem;letter-spacing:.1em;margin-bottom:1.4rem}
+.modal-x{position:absolute;top:1.4rem;right:1.4rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.1rem;cursor:pointer;transition:color .2s;line-height:1}
+.modal-x:hover{color:#fff}
+
+/* ── FORM ── */
+.fg{margin-bottom:1.1rem}
+.fl{display:block;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:.42rem}
+.fi,.fs,.fta{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.11);color:#fff;font-family:var(--font-c);font-size:.9rem;padding:.58rem .72rem;outline:none;transition:border-color .2s}
+.fi:focus,.fs:focus,.fta:focus{border-color:rgba(255,255,255,.35)}
+.fs{appearance:none;cursor:pointer}
+.fta{resize:vertical;min-height:72px;line-height:1.55}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+
+/* ── DROP ZONE ── */
+.drop{border:1px dashed rgba(255,255,255,.18);padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.drop:hover,.drop.over{border-color:rgba(255,255,255,.38);background:rgba(255,255,255,.02)}
+.drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:1.4rem;color:rgba(255,255,255,.2);margin-bottom:.35rem}
+.drop-txt{font-size:.78rem;letter-spacing:.08em;color:rgba(255,255,255,.3)}
+.drop-sub{font-size:.68rem;color:rgba(255,255,255,.18);margin-top:.18rem}
+.drop-file{font-size:.82rem;color:rgba(255,255,255,.65);margin-top:.5rem}
+.drop-dur{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.15rem}
+
+/* ── COLOR ── */
+.color-row{display:flex;gap:.55rem;align-items:center}
+.cpick{width:38px;height:38px;border:1px solid rgba(255,255,255,.18);border-radius:2px;cursor:pointer;padding:2px;flex-shrink:0;background:none}
+.ctxt{flex:1}
+
+/* ── PHOTO ZONE ── */
+.photo-z{width:100%;aspect-ratio:1;border:1px dashed rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s}
+.photo-z:hover{border-color:rgba(255,255,255,.35)}
+.photo-z img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-z input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.photo-z-lbl{font-size:.7rem;letter-spacing:.14em;color:rgba(255,255,255,.22);text-transform:uppercase}
+.photo-z-icon{font-size:1.6rem;color:rgba(255,255,255,.12)}
+
+/* ── GRAD PRESETS ── */
+.grad-presets{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.4rem}
+.gp{width:30px;height:30px;border-radius:2px;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+.gp:hover,.gp.sel{border-color:#fff}
+
+/* ── LINKS GRID ── */
+.links-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+
+/* ── MODAL FOOTER ── */
+.mfoot{display:flex;gap:.8rem;justify-content:flex-end;margin-top:1.8rem;padding-top:1.1rem;border-top:1px solid var(--dim)}
+.btn-cancel{background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.45);font-family:var(--font-c);font-size:.75rem;letter-spacing:.14em;padding:.45rem 1.1rem;cursor:pointer;transition:all .2s}
+.btn-cancel:hover{border-color:rgba(255,255,255,.45);color:#fff}
+.btn-ok{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:.75rem;letter-spacing:.2em;padding:.45rem 1.4rem;cursor:pointer;transition:opacity .2s}
+.btn-ok:hover{opacity:.82}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.8rem;right:1.8rem;z-index:9000;background:#111;border:1px solid var(--dim);padding:.7rem 1.3rem;font-size:.78rem;letter-spacing:.1em;transform:translateY(1.5rem);opacity:0;transition:all .28s;pointer-events:none}
+.toast.on{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="gate">
+  <div class="gate-logo">EUROGARDEN</div>
+  <div class="gate-sub">Admin · CMS</div>
+  <input type="password" class="gate-input" id="gatePass" placeholder="Password" autocomplete="current-password">
+  <div class="gate-err" id="gateErr"></div>
+  <button class="gate-btn" onclick="tryLogin()">ENTER</button>
+</div>
+
+<!-- ADMIN -->
+<div id="admin">
+  <header class="adm-hd">
+    <div class="adm-logo">EUROGARDEN <em>ADMIN</em></div>
+    <div class="hd-right">
+      <a href="index.html" class="btn-site" target="_blank">← VIEW SITE</a>
+      <button class="btn-save" id="saveBtn" onclick="saveAll()">SAVE &amp; PUBLISH</button>
+    </div>
+  </header>
+
+  <div class="adm-tabs">
+    <button class="tab-btn on" onclick="switchTab('songs',this)">SONGS</button>
+    <button class="tab-btn" onclick="switchTab('artists',this)">ARTISTS</button>
+  </div>
+
+  <div class="adm-body">
+
+    <!-- SONGS -->
+    <div id="tab-songs" class="tab-pane on">
+      <div class="sec-hd">
+        <div>
+          <div class="sec-title">NEW RELEASES</div>
+          <div class="sec-sub">Up to 14 songs · Click to edit · Green dot = MP3 uploaded</div>
+        </div>
+      </div>
+      <div class="tracks-list" id="tracksList"></div>
+    </div>
+
+    <!-- ARTISTS -->
+    <div id="tab-artists" class="tab-pane">
+      <div class="sec-hd">
+        <div>
+          <div class="sec-title">OUR ARTISTS</div>
+          <div class="sec-sub">Artist roster · Click to edit profile</div>
+        </div>
+        <button class="btn-add" onclick="openArtistModal(null)">+ ADD ARTIST</button>
+      </div>
+      <div class="artists-grid" id="artistsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACK MODAL -->
+<div class="overlay" id="trackOverlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeOverlay('trackOverlay')">✕</button>
+    <div class="modal-hd" id="trackMHd">EDIT SONG</div>
+
+    <div class="fg">
+      <label class="fl">Song Name</label>
+      <input type="text" class="fi" id="t_name" placeholder="Tiergarten">
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="fl">Project / Album</label>
+        <input type="text" class="fi" id="t_album" placeholder="Concrete Hymns EP">
+      </div>
+      <div class="fg">
+        <label class="fl">Artist Name</label>
+        <input type="text" class="fi" id="t_artist" placeholder="Void Circuit">
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">MP3 File</label>
+      <div class="drop" id="trackDrop">
+        <div class="drop-icon">♫</div>
+        <div class="drop-txt">Drop MP3 here or click to browse</div>
+        <div class="drop-sub">Duration detected automatically</div>
+        <div class="drop-file" id="dz_file" style="display:none"></div>
+        <div class="drop-dur" id="dz_dur" style="display:none"></div>
+        <input type="file" accept="audio/mpeg,.mp3" id="trackFileIn" onchange="handleTrackFile(this)">
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="fl">Track Art Color 1</label>
+        <div class="color-row">
+          <input type="color" class="cpick" id="t_g1c" value="#0d0d1e" oninput="syncC('g1')">
+          <input type="text" class="fi ctxt" id="t_g1t" value="#0d0d1e" oninput="syncCT('g1')">
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Track Art Color 2</label>
+        <div class="color-row">
+          <input type="color" class="cpick" id="t_g2c" value="#16213e" oninput="syncC('g2')">
+          <input type="text" class="fi ctxt" id="t_g2t" value="#16213e" oninput="syncCT('g2')">
+        </div>
+      </div>
+    </div>
+
+    <div class="mfoot">
+      <button class="btn-cancel" onclick="closeOverlay('trackOverlay')">CANCEL</button>
+      <button class="btn-ok" onclick="saveTrack()">SAVE SONG</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARTIST MODAL -->
+<div class="overlay" id="artistOverlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeOverlay('artistOverlay')">✕</button>
+    <div class="modal-hd" id="artistMHd">EDIT ARTIST</div>
+
+    <div class="frow">
+      <div>
+        <div class="fg">
+          <label class="fl">Artist Name</label>
+          <input type="text" class="fi" id="a_name" placeholder="VOID CIRCUIT">
+        </div>
+        <div class="fg">
+          <label class="fl">Location</label>
+          <input type="text" class="fi" id="a_loc" placeholder="New York / Leipzig">
+        </div>
+        <div class="fg">
+          <label class="fl">Genres / Tags (comma-separated)</label>
+          <input type="text" class="fi" id="a_tags" placeholder="Techno, Industrial, Berlin">
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Photo</label>
+        <div class="photo-z" id="photoZ">
+          <img id="photoPreview" style="display:none">
+          <div class="photo-z-icon" id="photoIcon">⊕</div>
+          <div class="photo-z-lbl" id="photoLbl">Upload Photo</div>
+          <input type="file" accept="image/*" id="artistPhotoIn" onchange="handlePhoto(this)">
+        </div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Short Bio (card hover)</label>
+      <textarea class="fta" id="a_bio" rows="2" placeholder="Brief description shown on hover..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">Full Bio (profile popup)</label>
+      <textarea class="fta" id="a_fullbio" rows="4" placeholder="Full artist biography shown when clicking their card..."></textarea>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Card Gradient</label>
+      <div class="grad-presets" id="gradPresets"></div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Social Links</label>
+      <div class="links-grid">
+        <div class="fg"><label class="fl">Bandcamp</label><input type="url" class="fi" id="a_bc" placeholder="https://...bandcamp.com"></div>
+        <div class="fg"><label class="fl">Resident Advisor</label><input type="url" class="fi" id="a_ra" placeholder="https://ra.co/dj/..."></div>
+        <div class="fg"><label class="fl">Instagram</label><input type="url" class="fi" id="a_ig" placeholder="https://instagram.com/..."></div>
+        <div class="fg"><label class="fl">Spotify</label><input type="url" class="fi" id="a_sp" placeholder="https://open.spotify.com/..."></div>
+      </div>
+    </div>
+
+    <div class="mfoot">
+      <button class="btn-cancel" onclick="closeOverlay('artistOverlay')">CANCEL</button>
+      <button class="btn-ok" onclick="saveArtist()">SAVE ARTIST</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────
+const PASSWORD = 'eurogarden2024';
+
+const GRAD_PRESETS = [
+  'linear-gradient(150deg,#0d0d1a,#1a0d28)',
+  'linear-gradient(150deg,#081408,#0a1e08)',
+  'linear-gradient(150deg,#180808,#280d0d)',
+  'linear-gradient(150deg,#0d0a1f,#1a0d2e)',
+  'linear-gradient(150deg,#141408,#1e1e0a)',
+  'linear-gradient(150deg,#081414,#0d1e1e)',
+  'linear-gradient(150deg,#1a0a14,#2a0d1e)',
+  'linear-gradient(150deg,#0a1414,#0d2018)',
+  'linear-gradient(150deg,#14100a,#1e160d)',
+  'linear-gradient(150deg,#0a0a1f,#141428)',
+  'linear-gradient(150deg,#1a0808,#2e1010)',
+  'linear-gradient(150deg,#081a08,#0d280d)',
+];
+
+const DEFAULT_TRACKS = [
+  {id:1,n:'01',name:'Tiergarten',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'6:47',g1:'#0d0d1e',g2:'#16213e',hasFile:false},
+  {id:2,n:'02',name:'Glass Cities',artist:'Sable Moor',album:'Static Gardens LP',dur:'5:12',g1:'#0a1a0a',g2:'#0d2010',hasFile:false},
+  {id:3,n:'03',name:'Periphery',artist:'Rausch',album:'Rausch LP',dur:'7:33',g1:'#1a0a0a',g2:'#2a0d0d',hasFile:false},
+  {id:4,n:'04',name:'Neon Meridian',artist:'Celestine V',album:'Abandon Frequencies',dur:'4:58',g1:'#0d0a1f',g2:'#1a0d30',hasFile:false},
+  {id:5,n:'05',name:'Collapse Theory',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'8:01',g1:'#1a1a08',g2:'#252510',hasFile:false},
+  {id:6,n:'06',name:'Surface Distortion',artist:'Midnight Canal',album:'Nacht Schicht Vol.2',dur:'6:22',g1:'#081515',g2:'#0d2020',hasFile:false},
+  {id:7,n:'07',name:'Iron Garden',artist:'Plomb',album:'Iron Garden LP',dur:'5:45',g1:'#1a0a14',g2:'#2a0d1e',hasFile:false},
+  {id:8,n:'08',name:'Eastern Europa',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'7:14',g1:'#0a1a14',g2:'#0d2018',hasFile:false},
+  {id:9,n:'09',name:'Séquence Noire',artist:'Celestine V',album:'Abandon Frequencies',dur:'5:30',g1:'#180d1a',g2:'#200a25',hasFile:false},
+  {id:10,n:'10',name:'Magnetfeld',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'9:02',g1:'#141408',g2:'#1e1e0a',hasFile:false},
+];
+const DEFAULT_ARTISTS = [
+  {id:101,name:'VOID CIRCUIT',tags:['Techno','Industrial','Berlin'],bio:'Duo based between New York and Leipzig. Their sound draws from the industrial heritage of both cities — metallic, percussive, unapologetic.',grad:'linear-gradient(150deg,#0d0d1a,#1a0d28)',location:'New York / Leipzig',fullBio:'Duo based between New York and Leipzig. Their sound draws from the industrial heritage of both cities — metallic, percussive, unapologetic. Two LPs on Eurogarden, multiple international tours.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:102,name:'SABLE MOOR',tags:['Ambient','Drone','Experimental'],bio:'Composer and sound sculptor from Reykjavík. Works with field recordings, degraded cassette, and custom-built oscillators.',grad:'linear-gradient(150deg,#081408,#0a1e08)',location:'Reykjavík',fullBio:'Composer and sound sculptor from Reykjavík. Works with field recordings, degraded cassette, and custom-built oscillators. Releases on Eurogarden and The Quietus Music.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:103,name:'RAUSCH',tags:['EBM','Coldwave','Post-Punk'],bio:'Berlin-based project rooted in hardcore and punk. RAUSCH blends cold synthesizer textures with aggressive rhythm structures.',grad:'linear-gradient(150deg,#180808,#280d0d)',location:'Berlin',fullBio:'Berlin-based project rooted in hardcore and punk. RAUSCH blends cold synthesizer textures with aggressive rhythm structures. Their debut LP sold out in 48 hours.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:104,name:'CELESTINE V',tags:['Electronic','Experimental','Avant-pop'],bio:'Paris-trained composer building layered worlds between pop sensibility and avant-garde form.',grad:'linear-gradient(150deg,#0d0a1f,#1a0d2e)',location:'Paris',fullBio:'Paris-trained composer building layered worlds between pop sensibility and avant-garde form. First European signing to Eurogarden. Residency at Centre Pompidou, 2024.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:105,name:'FALK DREHER',tags:['Techno','Minimal','Modular'],bio:'Frankfurt producer with a decade-long career in modular synthesis. Known for hypnotic, evolving sets.',grad:'linear-gradient(150deg,#141408,#1e1e0a)',location:'Frankfurt',fullBio:'Frankfurt producer with a decade-long career in modular synthesis. Known for hypnotic, evolving sets. Regular at Berghain and Tresor.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:106,name:'MIDNIGHT CANAL',tags:['Ambient','Techno','Atmospheric'],bio:'Anonymous producer from Rotterdam. The Nacht Schicht series has achieved cult status among collectors.',grad:'linear-gradient(150deg,#081414,#0d1e1e)',location:'Rotterdam',fullBio:'Anonymous producer from Rotterdam. Each release is untitled and accompanied only by a handwritten note. The Nacht Schicht series has achieved cult status among collectors.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+];
+
+// ── STATE ────────────────────────────────────────
+let tracks=[], artists=[], editTIdx=-1, editAIdx=null;
+let pendingBlob=null, pendingDur='', pendingPhoto=null, selGrad=GRAD_PRESETS[0];
+let idb=null;
+
+// ── INDEXEDDB ────────────────────────────────────
+function openIDB(){
+  return new Promise((res,rej)=>{
+    if(idb) return res(idb);
+    const r=indexedDB.open('eurogarden_cms',2);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('tracks')) d.createObjectStore('tracks',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('photos')) d.createObjectStore('photos',{keyPath:'id'});
+    };
+    r.onsuccess=e=>{idb=e.target.result;res(idb);};
+    r.onerror=()=>rej(r.error);
+  });
+}
+function idbPut(store,id,data){
+  return openIDB().then(d=>new Promise((res,rej)=>{
+    const tx=d.transaction(store,'readwrite');
+    tx.objectStore(store).put({id,data});
+    tx.oncomplete=res; tx.onerror=rej;
+  }));
+}
+function idbGet(store,id){
+  return openIDB().then(d=>new Promise(res=>{
+    const tx=d.transaction(store,'readonly');
+    const r=tx.objectStore(store).get(id);
+    r.onsuccess=()=>res(r.result?.data||null);
+    r.onerror=()=>res(null);
+  }));
+}
+function idbDel(store,id){
+  return openIDB().then(d=>new Promise(res=>{
+    const tx=d.transaction(store,'readwrite');
+    tx.objectStore(store).delete(id);
+    tx.oncomplete=res; tx.onerror=res;
+  }));
+}
+
+// ── AUTH ─────────────────────────────────────────
+function tryLogin(){
+  if(document.getElementById('gatePass').value===PASSWORD){
+    document.getElementById('gate').classList.add('gone');
+    document.getElementById('admin').classList.add('on');
+    init();
+  } else {
+    document.getElementById('gateErr').textContent='Incorrect password';
+    setTimeout(()=>document.getElementById('gateErr').textContent='',2000);
+  }
+}
+document.getElementById('gatePass').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+
+// ── INIT ─────────────────────────────────────────
+function init(){
+  try{const d=localStorage.getItem('eg_tracks');tracks=d?JSON.parse(d):[...DEFAULT_TRACKS];}catch{tracks=[...DEFAULT_TRACKS];}
+  try{const d=localStorage.getItem('eg_artists');artists=d?JSON.parse(d):[...DEFAULT_ARTISTS];}catch{artists=[...DEFAULT_ARTISTS];}
+  buildGradPresets();
+  renderTracks();
+  renderArtists();
+}
+
+function saveAll(){
+  localStorage.setItem('eg_tracks',JSON.stringify(tracks));
+  localStorage.setItem('eg_artists',JSON.stringify(artists));
+  const b=document.getElementById('saveBtn');
+  b.textContent='SAVED ✓'; b.classList.add('ok');
+  showToast('Changes saved & live on site');
+  setTimeout(()=>{b.textContent='SAVE & PUBLISH';b.classList.remove('ok');},2600);
+}
+
+// ── TABS ─────────────────────────────────────────
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tab-'+name).classList.add('on');
+}
+
+// ── TRACKS ───────────────────────────────────────
+function renderTracks(){
+  const list=document.getElementById('tracksList');
+  list.innerHTML='';
+  for(let i=0;i<14;i++){
+    const t=tracks[i];
+    const n=String(i+1).padStart(2,'0');
+    const row=document.createElement('div');
+    if(t){
+      row.className='tr';
+      row.innerHTML=`
+        <div class="tr-n">${n}</div>
+        <div><div class="tr-name">${esc(t.name)}</div><div class="tr-meta">${esc(t.album)} · ${esc(t.artist)}</div></div>
+        <div class="tr-dur">${t.dur||'—'}</div>
+        <div class="tr-dot${t.hasFile?' ok':''}" title="${t.hasFile?'MP3 uploaded':'No MP3 file'}"></div>
+        <div class="tr-acts">
+          <button class="btn-sm" onclick="openTrackModal(${i})">EDIT</button>
+          <button class="btn-sm del" onclick="delTrack(${i})">DEL</button>
+        </div>`;
+    } else {
+      row.className='tr empty';
+      row.onclick=()=>openTrackModal(i);
+      row.innerHTML=`<div class="tr-n">${n}</div><div class="tr-empty-lbl">+ Add Song</div>`;
+    }
+    list.appendChild(row);
+  }
+}
+
+function delTrack(i){
+  if(!confirm(`Delete "${tracks[i].name}"?`)) return;
+  const t=tracks[i];
+  if(t.hasFile) idbDel('tracks',t.id);
+  tracks.splice(i,1);
+  tracks.forEach((t,i)=>{ t.n=String(i+1).padStart(2,'0'); });
+  renderTracks(); showToast('Song removed');
+}
+
+// ── TRACK MODAL ──────────────────────────────────
+function openTrackModal(i){
+  editTIdx=i; pendingBlob=null; pendingDur='';
+  const t=tracks[i];
+  document.getElementById('trackMHd').textContent=t?'EDIT SONG':'ADD SONG';
+  document.getElementById('t_name').value=t?.name||'';
+  document.getElementById('t_album').value=t?.album||'';
+  document.getElementById('t_artist').value=t?.artist||'';
+  const g1=t?.g1||'#0d0d1e', g2=t?.g2||'#16213e';
+  document.getElementById('t_g1c').value=g1; document.getElementById('t_g1t').value=g1;
+  document.getElementById('t_g2c').value=g2; document.getElementById('t_g2t').value=g2;
+  const fi=document.getElementById('dz_file'), fd=document.getElementById('dz_dur');
+  if(t?.hasFile){fi.textContent='MP3 on file';fi.style.display='block';fd.textContent='Duration: '+(t.dur||'—');fd.style.display='block';}
+  else{fi.style.display='none';fd.style.display='none';}
+  document.getElementById('trackFileIn').value='';
+  openOverlay('trackOverlay');
+}
+
+function handleTrackFile(input){
+  const file=input.files[0]; if(!file) return;
+  pendingBlob=file;
+  document.getElementById('dz_file').textContent=file.name;
+  document.getElementById('dz_file').style.display='block';
+  const url=URL.createObjectURL(file);
+  const a=new Audio(); a.src=url;
+  a.onloadedmetadata=()=>{
+    const m=Math.floor(a.duration/60), s=Math.floor(a.duration%60);
+    pendingDur=`${m}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('dz_dur').textContent='Duration: '+pendingDur;
+    document.getElementById('dz_dur').style.display='block';
+    URL.revokeObjectURL(url);
+  };
+}
+
+function saveTrack(){
+  const name=document.getElementById('t_name').value.trim();
+  const artist=document.getElementById('t_artist').value.trim();
+  if(!name||!artist){showToast('Song name and artist are required');return;}
+  const existing=tracks[editTIdx];
+  const id=existing?.id||Date.now();
+  const dur=pendingDur||existing?.dur||'—';
+  const updated={id,n:String(editTIdx+1).padStart(2,'0'),name,artist,
+    album:document.getElementById('t_album').value.trim(),
+    dur,g1:document.getElementById('t_g1c').value,g2:document.getElementById('t_g2c').value,
+    hasFile:pendingBlob?true:(existing?.hasFile||false)};
+  if(pendingBlob) idbPut('tracks',id,pendingBlob);
+  tracks[editTIdx]=updated;
+  renderTracks(); closeOverlay('trackOverlay');
+  showToast(existing?'Song updated':'Song added');
+}
+
+function syncC(w){document.getElementById(`t_${w}t`).value=document.getElementById(`t_${w}c`).value;}
+function syncCT(w){const v=document.getElementById(`t_${w}t`).value;if(/^#[0-9a-fA-F]{6}$/.test(v))document.getElementById(`t_${w}c`).value=v;}
+
+// drag-and-drop on drop zone
+const drop=document.getElementById('trackDrop');
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over');});
+drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+drop.addEventListener('drop',e=>{
+  e.preventDefault(); drop.classList.remove('over');
+  const file=e.dataTransfer.files[0];
+  if(!file||(file.type!=='audio/mpeg'&&!file.name.endsWith('.mp3'))) return;
+  pendingBlob=file;
+  document.getElementById('dz_file').textContent=file.name;
+  document.getElementById('dz_file').style.display='block';
+  const url=URL.createObjectURL(file);
+  const a=new Audio(); a.src=url;
+  a.onloadedmetadata=()=>{
+    const m=Math.floor(a.duration/60),s=Math.floor(a.duration%60);
+    pendingDur=`${m}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('dz_dur').textContent='Duration: '+pendingDur;
+    document.getElementById('dz_dur').style.display='block';
+    URL.revokeObjectURL(url);
+  };
+});
+
+// ── ARTISTS ──────────────────────────────────────
+function buildGradPresets(){
+  const c=document.getElementById('gradPresets');
+  GRAD_PRESETS.forEach(g=>{
+    const el=document.createElement('div');
+    el.className='gp'; el.style.background=g; el.title=g;
+    el.onclick=()=>{
+      c.querySelectorAll('.gp').forEach(p=>p.classList.remove('sel'));
+      el.classList.add('sel'); selGrad=g;
+    };
+    c.appendChild(el);
+  });
+  c.children[0]?.classList.add('sel');
+}
+
+function renderArtists(){
+  const list=document.getElementById('artistsList');
+  list.innerHTML='';
+  artists.forEach((a,i)=>{
+    const card=document.createElement('div');
+    card.className='aca';
+    card.innerHTML=`
+      <div class="aca-swatch" style="background:${a.grad}"></div>
+      <div class="aca-body">
+        <div class="aca-name">${esc(a.name)}</div>
+        <div class="aca-tags">${a.tags.map(t=>`<span class="aca-tag">${esc(t)}</span>`).join('')}</div>
+        <div class="aca-bio">${esc(a.bio)}</div>
+        <div class="aca-acts">
+          <button class="btn-sm" onclick="openArtistModal(${i})">EDIT</button>
+          <button class="btn-sm del" onclick="delArtist(${i})">REMOVE</button>
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+  const add=document.createElement('div');
+  add.className='add-card'; add.onclick=()=>openArtistModal(null);
+  add.innerHTML=`<div class="add-card-icon">+</div><div class="add-card-lbl">Add Artist</div>`;
+  list.appendChild(add);
+}
+
+function delArtist(i){
+  if(!confirm(`Remove ${artists[i].name}?`)) return;
+  if(artists[i].hasPhoto) idbDel('photos',artists[i].id);
+  artists.splice(i,1);
+  renderArtists(); showToast('Artist removed');
+}
+
+// ── ARTIST MODAL ─────────────────────────────────
+function openArtistModal(idx){
+  editAIdx=idx; pendingPhoto=null;
+  const a=idx!==null?artists[idx]:null;
+  document.getElementById('artistMHd').textContent=a?'EDIT ARTIST':'ADD ARTIST';
+  document.getElementById('a_name').value=a?.name||'';
+  document.getElementById('a_loc').value=a?.location||'';
+  document.getElementById('a_tags').value=a?.tags?.join(', ')||'';
+  document.getElementById('a_bio').value=a?.bio||'';
+  document.getElementById('a_fullbio').value=a?.fullBio||'';
+  document.getElementById('a_bc').value=a?.links?.bandcamp||'';
+  document.getElementById('a_ra').value=a?.links?.ra||'';
+  document.getElementById('a_ig').value=a?.links?.instagram||'';
+  document.getElementById('a_sp').value=a?.links?.spotify||'';
+  selGrad=a?.grad||GRAD_PRESETS[0];
+  document.querySelectorAll('.gp').forEach(p=>p.classList.toggle('sel',p.title===selGrad));
+  const prev=document.getElementById('photoPreview');
+  prev.style.display='none'; document.getElementById('photoIcon').style.display='block'; document.getElementById('photoLbl').style.display='block';
+  document.getElementById('artistPhotoIn').value='';
+  if(a?.hasPhoto) idbGet('photos',a.id).then(d=>{if(d){prev.src=d;prev.style.display='block';document.getElementById('photoIcon').style.display='none';document.getElementById('photoLbl').style.display='none';}});
+  openOverlay('artistOverlay');
+}
+
+function handlePhoto(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendingPhoto=e.target.result;
+    const prev=document.getElementById('photoPreview');
+    prev.src=pendingPhoto; prev.style.display='block';
+    document.getElementById('photoIcon').style.display='none';
+    document.getElementById('photoLbl').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveArtist(){
+  const name=document.getElementById('a_name').value.trim();
+  if(!name){showToast('Artist name is required');return;}
+  const existing=editAIdx!==null?artists[editAIdx]:null;
+  const id=existing?.id||Date.now();
+  const tags=document.getElementById('a_tags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const updated={id,name:name.toUpperCase(),
+    location:document.getElementById('a_loc').value.trim(),
+    tags,bio:document.getElementById('a_bio').value.trim(),
+    fullBio:document.getElementById('a_fullbio').value.trim(),
+    grad:selGrad,
+    hasPhoto:pendingPhoto?true:(existing?.hasPhoto||false),
+    links:{bandcamp:document.getElementById('a_bc').value.trim(),
+      ra:document.getElementById('a_ra').value.trim(),
+      instagram:document.getElementById('a_ig').value.trim(),
+      spotify:document.getElementById('a_sp').value.trim()}};
+  if(pendingPhoto) idbPut('photos',id,pendingPhoto);
+  if(editAIdx!==null) artists[editAIdx]=updated; else artists.push(updated);
+  renderArtists(); closeOverlay('artistOverlay');
+  showToast(existing?'Artist updated':'Artist added');
+}
+
+// ── OVERLAY HELPERS ──────────────────────────────
+function openOverlay(id){document.getElementById(id).classList.add('on');}
+function closeOverlay(id){document.getElementById(id).classList.remove('on');}
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');});
+});
+
+// ── UTILS ────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2600);
+}
+</script>
+</body>
+</html>
