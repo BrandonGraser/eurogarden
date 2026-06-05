@@ -1245,6 +1245,20 @@ const scroll=(function(){
   if(!first) return;
   document.getElementById('mpN').textContent=first.name.toUpperCase();
   document.getElementById('mpA').textContent=first.artist.toUpperCase();
+  if(!first.hasCover) return;
+  const req=indexedDB.open('eurogarden_cms',3);
+  req.onsuccess=e=>{
+    const db=e.target.result;
+    if(!db.objectStoreNames.contains('covers')) return;
+    const r=db.transaction('covers','readonly').objectStore('covers').get(first.id);
+    r.onsuccess=()=>{
+      if(!r.result?.data) return;
+      const img=document.getElementById('mpCoverImg');
+      const fb=document.querySelector('.mp-disc-fallback');
+      if(img){img.src=r.result.data;img.style.display='block';}
+      if(fb) fb.style.display='none';
+    };
+  };
 })();
 
 /* ── POSTER WALL ──────────────────────────── */
