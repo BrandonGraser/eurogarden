@@ -878,16 +878,6 @@ const scroll=(function(){
     const sti=panel.querySelector('.sti');
     if(titleEl) titleEl.classList.add('go');
     if(sti) setTimeout(()=>scramble(sti),120);
-    if(sel==='#releases'){
-      gsap.fromTo('.track',{opacity:0,y:22},{opacity:1,y:0,duration:.48,stagger:.032,ease:'power3.out',delay:.18});
-    } else if(sel==='#posters'){
-      gsap.fromTo('.poster-card',{opacity:0,y:70},{opacity:1,y:0,duration:.65,stagger:.07,ease:'power3.out',delay:.12});
-    } else if(sel==='#artists'){
-      gsap.fromTo('.ac',{opacity:0,x:55},{opacity:1,x:0,duration:.52,stagger:.065,ease:'power3.out',delay:.14});
-    } else if(sel==='#contact'){
-      gsap.fromTo('.contact-grid > *',{opacity:0,y:22},{opacity:1,y:0,duration:.52,stagger:.1,ease:'power3.out',delay:.16});
-      gsap.fromTo('.ff',{opacity:0,y:14},{opacity:1,y:0,duration:.4,stagger:.05,ease:'power2.out',delay:.38});
-    }
   }
 
   function animateOut(idx){
