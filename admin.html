@@ -536,16 +536,16 @@ function saveTrack(){
   const dur=pendingDur||existing?.dur||'—';
   const updated={id,n:String(editTIdx+1).padStart(2,'0'),name,artist,
     album:document.getElementById('t_album').value.trim(),
-    dur,g1:document.getElementById('t_g1c').value,g2:document.getElementById('t_g2c').value,
-    hasFile:pendingBlob?true:(existing?.hasFile||false)};
+    dur,
+    g1:existing?.g1||'#0d0d1e', g2:existing?.g2||'#16213e',
+    hasFile:pendingBlob?true:(existing?.hasFile||false),
+    hasCover:pendingCover?true:(existing?.hasCover||false)};
   if(pendingBlob) idbPut('tracks',id,pendingBlob);
+  if(pendingCover) idbPut('covers',id,pendingCover);
   tracks[editTIdx]=updated;
   renderTracks(); closeOverlay('trackOverlay');
   showToast(existing?'Song updated':'Song added');
 }
-
-function syncC(w){document.getElementById(`t_${w}t`).value=document.getElementById(`t_${w}c`).value;}
-function syncCT(w){const v=document.getElementById(`t_${w}t`).value;if(/^#[0-9a-fA-F]{6}$/.test(v))document.getElementById(`t_${w}c`).value=v;}
 
 // drag-and-drop on drop zone
 const drop=document.getElementById('trackDrop');
