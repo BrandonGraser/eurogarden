@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>EUROGARDEN</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'Aeternus Tall';
+  src:url('fonts/aeternus-tall-vf.ttf') format('truetype');
+  font-weight:100 900;font-style:normal oblique;font-display:swap;
+}
+@font-face{
+  font-family:'Aeternus Nano';
+  src:url('fonts/aeternus-nano-vf.ttf') format('truetype');
+  font-weight:100 900;font-style:normal oblique;font-display:swap;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
 <style>
@@ -14,14 +24,26 @@
 :root{
   --black:#000;--white:#fff;--red:#c41e3a;
   --dim:rgba(255,255,255,.1);--dimmer:rgba(255,255,255,.05);
-  --font-d:'Bebas Neue',sans-serif;
-  --font-c:'Barlow Condensed',sans-serif;
-  --font-m:'Space Mono',monospace;
+  --font-d:'Aeternus Tall',sans-serif;
+  --font-c:'Aeternus Nano',sans-serif;
+  --font-m:'Aeternus Nano',sans-serif;
 }
 html,body{height:100%;overflow:hidden}
 body{background:var(--black);color:var(--white);font-family:var(--font-c);overflow-x:hidden;cursor:none}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--white);color:var(--black)}
+
+/* ── FONT WEIGHTS ────────────────── */
+/* Aeternus Tall — extrabold for all display headers */
+.hw-main,.sec-title,.nav-logo,.cf-logo,.vl-name,.mp-name,
+.ac-name,.ao-name,.ld-logo-txt,.ld-pct,.pb-artist,.pb-date,
+.pr-label,.form-btn,.track-title{font-weight:800}
+/* Aeternus Nano — normal weight for body / sub text */
+.hw-sub,.hw-detail,.hw-cta,.track-meta,.track-dur,.track-n,
+.vl-artist,.vl-hint,.vv-lbl,.vv-pct,.mp-artist,
+.nav-links a,.ld-sub-txt,.ld-cue,.ld-edge,.cd-lbl,.cd-val,
+.pb-event,.pb-release,.pb-venue,.pb-brand,.ac-tag,
+.ao-bio,.ao-link,.ag-hint,.poster-hint-txt,#sc,.cf-copy{font-weight:400}
 
 /* ── GRAIN ───────────────────────── */
 body::after{
@@ -129,7 +151,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 .hw-cta:hover{background:var(--white);color:var(--black)}
 
 /* vinyl */
-.vinyl-wrap{position:relative;display:flex;justify-content:center;align-items:center;z-index:2}
+.vinyl-wrap{position:relative;display:flex;justify-content:center;align-items:center;z-index:2;padding-bottom:7rem}
 .vinyl-scene{position:relative;width:clamp(230px,34vw,450px);height:clamp(230px,34vw,450px)}
 .prg-svg{position:absolute;inset:-10px;width:calc(100% + 20px);height:calc(100% + 20px);transform:rotate(-90deg);pointer-events:none;z-index:10}
 .prg-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:1.5}
@@ -146,10 +168,33 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 @keyframes vspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .needle-arm{position:absolute;top:-5%;right:-18%;width:46%;height:82%;transform-origin:18% 9%;transform:rotate(-28deg);transition:transform .85s cubic-bezier(.25,.46,.45,.94);z-index:20;pointer-events:none}
 .needle-arm.playing{transform:rotate(2deg)}
-.vinyl-label{position:absolute;bottom:-4.5rem;left:0;right:0;text-align:center;pointer-events:none}
+.vinyl-label{position:absolute;bottom:-7rem;left:0;right:0;text-align:center;pointer-events:none}
 .vl-name{font-family:var(--font-d);font-size:1.15rem;letter-spacing:.1em;color:var(--white);margin-bottom:.1rem}
 .vl-artist{font-family:var(--font-m);font-size:.52rem;letter-spacing:.25em;color:rgba(255,255,255,.28);text-transform:uppercase}
 .vl-hint{font-family:var(--font-m);font-size:.44rem;color:rgba(255,255,255,.13);letter-spacing:.18em;text-transform:uppercase;margin-top:.3rem}
+.vinyl-vol{
+  display:flex;align-items:center;gap:.7rem;
+  margin-top:1rem;pointer-events:auto;padding:0 .3rem;
+}
+.vv-lbl{font-family:var(--font-m);font-size:.4rem;letter-spacing:.28em;color:rgba(255,255,255,.22);text-transform:uppercase;white-space:nowrap}
+.vv-slider{
+  -webkit-appearance:none;appearance:none;
+  flex:1;height:1px;background:rgba(255,255,255,.14);
+  outline:none;cursor:ew-resize;border-radius:1px;
+}
+.vv-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--white);cursor:ew-resize;
+  box-shadow:0 0 8px rgba(255,255,255,.45);
+  transition:transform .15s;
+}
+.vv-slider:active::-webkit-slider-thumb{transform:scale(1.45)}
+.vv-slider::-moz-range-thumb{
+  width:11px;height:11px;border-radius:50%;border:none;
+  background:var(--white);cursor:ew-resize;
+}
+.vv-pct{font-family:var(--font-m);font-size:.4rem;letter-spacing:.1em;color:rgba(255,255,255,.22);width:2.4em;text-align:right;white-space:nowrap}
 
 /* ── SECTION TITLE ───────────────── */
 .sec-title{
@@ -406,7 +451,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
         <!-- divider -->
         <line x1="18" y1="122" x2="182" y2="122" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
         <!-- brand -->
-        <text x="100" y="146" text-anchor="middle" fill="rgba(255,255,255,.09)" font-family="'Bebas Neue',sans-serif" font-size="9" letter-spacing="4.5">EUROGARDEN</text>
+        <text x="100" y="146" text-anchor="middle" fill="rgba(255,255,255,.09)" font-family="'Aeternus Tall',sans-serif" font-weight="800" font-size="9" letter-spacing="4.5">EUROGARDEN</text>
         <!-- woofer (animated) -->
         <g class="spk-woofer-g">
           <circle cx="100" cy="268" r="84" fill="#0a0a0a" stroke="rgba(255,255,255,.16)" stroke-width="1.5"/>
@@ -452,7 +497,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
         <circle cx="100" cy="72" r="6"  fill="#1c1c1c"/>
         <circle cx="100" cy="72" r="2.5" fill="rgba(255,255,255,.22)"/>
         <line x1="18" y1="122" x2="182" y2="122" stroke="rgba(255,255,255,.06)" stroke-width=".8"/>
-        <text x="100" y="146" text-anchor="middle" fill="rgba(255,255,255,.09)" font-family="'Bebas Neue',sans-serif" font-size="9" letter-spacing="4.5">EUROGARDEN</text>
+        <text x="100" y="146" text-anchor="middle" fill="rgba(255,255,255,.09)" font-family="'Aeternus Tall',sans-serif" font-weight="800" font-size="9" letter-spacing="4.5">EUROGARDEN</text>
         <g class="spk-woofer-g">
           <circle cx="100" cy="268" r="84" fill="#0a0a0a" stroke="rgba(255,255,255,.16)" stroke-width="1.5"/>
           <circle cx="100" cy="268" r="76" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
@@ -536,7 +581,7 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
             <circle cx="250" cy="250" r="245" fill="url(#vg)"/>
             <circle cx="250" cy="250" r="240" fill="none" stroke="rgba(255,255,255,.024)" stroke-width="1"/><circle cx="250" cy="250" r="233" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="226" fill="none" stroke="rgba(255,255,255,.027)" stroke-width="1"/><circle cx="250" cy="250" r="219" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="212" fill="none" stroke="rgba(255,255,255,.031)" stroke-width="1"/><circle cx="250" cy="250" r="205" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="198" fill="none" stroke="rgba(255,255,255,.024)" stroke-width="1"/><circle cx="250" cy="250" r="191" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="184" fill="none" stroke="rgba(255,255,255,.029)" stroke-width="1"/><circle cx="250" cy="250" r="177" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="170" fill="none" stroke="rgba(255,255,255,.024)" stroke-width="1"/><circle cx="250" cy="250" r="163" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="156" fill="none" stroke="rgba(255,255,255,.029)" stroke-width="1"/><circle cx="250" cy="250" r="149" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="142" fill="none" stroke="rgba(255,255,255,.024)" stroke-width="1"/><circle cx="250" cy="250" r="135" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="128" fill="none" stroke="rgba(255,255,255,.031)" stroke-width="1"/><circle cx="250" cy="250" r="121" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="114" fill="none" stroke="rgba(255,255,255,.024)" stroke-width="1"/><circle cx="250" cy="250" r="107" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="100" fill="none" stroke="rgba(255,255,255,.029)" stroke-width="1"/><circle cx="250" cy="250" r="93" fill="none" stroke="rgba(255,255,255,.017)" stroke-width=".7"/><circle cx="250" cy="250" r="86" fill="none" stroke="rgba(255,255,255,.024)" stroke-width=".8"/>
             <circle cx="250" cy="250" r="74" fill="#f2f2f2"/>
-            <text x="250" y="240" text-anchor="middle" fill="#1a1a1a" font-family="'Bebas Neue',sans-serif" font-size="9" letter-spacing="3">EUROGARDEN</text>
+            <text x="250" y="240" text-anchor="middle" fill="#1a1a1a" font-family="'Aeternus Tall',sans-serif" font-weight="800" font-size="9" letter-spacing="3">EUROGARDEN</text>
             <line x1="218" y1="245" x2="282" y2="245" stroke="rgba(0,0,0,.18)" stroke-width=".5"/>
             <text id="lblTrack" x="250" y="257" text-anchor="middle" fill="#555" font-family="'Space Mono',monospace" font-size="5" letter-spacing=".8">MAYBE</text>
             <text x="250" y="267" text-anchor="middle" fill="rgba(0,0,0,.3)" font-family="'Space Mono',monospace" font-size="4.5" letter-spacing=".5">SIDE A · 45 RPM</text>
@@ -558,6 +603,11 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
           <div class="vl-name" id="vlName">MAYBE</div>
           <div class="vl-artist" id="vlArtist">SAiiLOR</div>
           <div class="vl-hint">[ CLICK RECORD TO PLAY ]</div>
+          <div class="vinyl-vol">
+            <span class="vv-lbl">VOL</span>
+            <input type="range" id="heroVol" class="vv-slider" min="0" max="100" value="100">
+            <span class="vv-pct" id="heroVolPct">100%</span>
+          </div>
         </div>
       </div>
     </div>
@@ -965,6 +1015,32 @@ const scroll=(function(){
     document.querySelector(`.track[data-id="${t.id}"]`)?.classList.add('active');
     setTimeout(()=>play(),320);
   };
+})();
+
+/* ── HERO VOLUME SLIDER ───────────────────── */
+(function(){
+  const slider = document.getElementById('heroVol');
+  const pctEl  = document.getElementById('heroVolPct');
+  const audio  = document.getElementById('audio');
+
+  function fill(v){
+    slider.style.background=`linear-gradient(to right,rgba(255,255,255,.75) ${v}%,rgba(255,255,255,.14) ${v}%)`;
+    pctEl.textContent=v+'%';
+  }
+  fill(100);
+
+  slider.addEventListener('input',function(){
+    const v=parseInt(this.value);
+    audio.volume=v/100;
+    fill(v);
+  });
+
+  // keep slider in sync if audio.volume is changed elsewhere (e.g. loadTrack)
+  audio.addEventListener('volumechange',()=>{
+    const v=Math.round(audio.volume*100);
+    slider.value=v;
+    fill(v);
+  });
 })();
 
 /* ── TRACKLIST ────────────────────────────── */
