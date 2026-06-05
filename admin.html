@@ -478,20 +478,37 @@ function delTrack(i){
 
 // ── TRACK MODAL ──────────────────────────────────
 function openTrackModal(i){
-  editTIdx=i; pendingBlob=null; pendingDur='';
+  editTIdx=i; pendingBlob=null; pendingDur=''; pendingCover=null;
   const t=tracks[i];
   document.getElementById('trackMHd').textContent=t?'EDIT SONG':'ADD SONG';
   document.getElementById('t_name').value=t?.name||'';
   document.getElementById('t_album').value=t?.album||'';
   document.getElementById('t_artist').value=t?.artist||'';
-  const g1=t?.g1||'#0d0d1e', g2=t?.g2||'#16213e';
-  document.getElementById('t_g1c').value=g1; document.getElementById('t_g1t').value=g1;
-  document.getElementById('t_g2c').value=g2; document.getElementById('t_g2t').value=g2;
   const fi=document.getElementById('dz_file'), fd=document.getElementById('dz_dur');
   if(t?.hasFile){fi.textContent='MP3 on file';fi.style.display='block';fd.textContent='Duration: '+(t.dur||'—');fd.style.display='block';}
   else{fi.style.display='none';fd.style.display='none';}
   document.getElementById('trackFileIn').value='';
+  // Cover art preview
+  const cvFile=document.getElementById('cv_file'), cvPrev=document.getElementById('cv_preview');
+  cvFile.style.display='none'; cvPrev.style.display='none';
+  document.getElementById('coverFileIn').value='';
+  if(t?.hasCover){
+    idbGet('covers',t.id).then(d=>{if(d){cvPrev.src=d;cvPrev.style.display='block';cvFile.textContent='Cover on file';cvFile.style.display='block';}});
+  }
   openOverlay('trackOverlay');
+}
+
+function handleCoverFile(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendingCover=e.target.result;
+    const cvPrev=document.getElementById('cv_preview');
+    cvPrev.src=pendingCover; cvPrev.style.display='block';
+    document.getElementById('cv_file').textContent=file.name;
+    document.getElementById('cv_file').style.display='block';
+  };
+  reader.readAsDataURL(file);
 }
 
 function handleTrackFile(input){
