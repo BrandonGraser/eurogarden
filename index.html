@@ -1205,6 +1205,14 @@ const scroll=(function(){
   });
 })();
 
+/* ── MINI PLAYER INIT ─────────────────────── */
+(function(){
+  const first=TRACKS[0];
+  if(!first) return;
+  document.getElementById('mpN').textContent=first.name.toUpperCase();
+  document.getElementById('mpA').textContent=first.artist.toUpperCase();
+})();
+
 /* ── POSTER WALL ──────────────────────────── */
 (function(){
   const arena=document.getElementById('posterArena');
