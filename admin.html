@@ -589,20 +589,6 @@ drop.addEventListener('drop',e=>{
 });
 
 // ── ARTISTS ──────────────────────────────────────
-function buildGradPresets(){
-  const c=document.getElementById('gradPresets');
-  GRAD_PRESETS.forEach(g=>{
-    const el=document.createElement('div');
-    el.className='gp'; el.style.background=g; el.title=g;
-    el.onclick=()=>{
-      c.querySelectorAll('.gp').forEach(p=>p.classList.remove('sel'));
-      el.classList.add('sel'); selGrad=g;
-    };
-    c.appendChild(el);
-  });
-  c.children[0]?.classList.add('sel');
-}
-
 function renderArtists(){
   const list=document.getElementById('artistsList');
   list.innerHTML='';
