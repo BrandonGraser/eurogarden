@@ -1181,9 +1181,26 @@ const scroll=(function(){
   const vs=`<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".4"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width=".8" opacity=".25"/><circle cx="12" cy="12" r="2.2" opacity=".4"/></svg>`;
   TRACKS.forEach((t,i)=>{
     const el=document.createElement('div');el.className='track'+(i===0?' active':'');el.dataset.id=t.id;
-    el.innerHTML=`<div class="track-bg-n">${t.n}</div><div class="track-n">${t.n}</div><div class="track-art"><div class="track-art-bg" style="background:linear-gradient(135deg,${t.g1},${t.g2})">${vs}</div></div><div class="track-info"><div class="track-title">${t.name}</div><div class="track-meta">${t.album} · ${t.artist}</div></div><div class="track-dur">${t.dur}</div>`;
+    el.innerHTML=`<div class="track-bg-n">${t.n}</div><div class="track-n">${t.n}</div><div class="track-art"><div class="track-art-bg" id="tart-${t.id}" style="background:linear-gradient(135deg,${t.g1||'#0d0d1e'},${t.g2||'#16213e'})">${vs}</div></div><div class="track-info"><div class="track-title">${t.name}</div><div class="track-meta">${t.album} · ${t.artist}</div></div><div class="track-dur">${t.dur}</div>`;
     el.addEventListener('click',()=>window.loadTrack(t));
     g.appendChild(el);
+    // async load cover art if available
+    if(t.hasCover){
+      (function(trackId){
+        const req=indexedDB.open('eurogarden_cms',2);
+        req.onsuccess=e=>{
+          const db=e.target.result;
+          if(!db.objectStoreNames.contains('covers')) return;
+          const tx=db.transaction('covers','readonly');
+          const r=tx.objectStore('covers').get(trackId);
+          r.onsuccess=()=>{
+            if(!r.result?.data) return;
+            const bg=document.getElementById('tart-'+trackId);
+            if(bg){bg.innerHTML='';bg.style.background='none';bg.style.backgroundImage=`url('${r.result.data}')`;bg.style.backgroundSize='cover';bg.style.backgroundPosition='center';}
+          };
+        };
+      })(t.id);
+    }
   });
 })();
 
