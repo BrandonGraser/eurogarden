@@ -1118,7 +1118,7 @@ const scroll=(function(){
   document.getElementById('mpDisc')?.addEventListener('click',e=>{e.stopPropagation();playing?stop():play();});
   function getTrackBlob(id){
     return new Promise(res=>{
-      const req=indexedDB.open('eurogarden_cms',2);
+      const req=indexedDB.open('eurogarden_cms',3);
       req.onsuccess=e=>{
         const db=e.target.result;
         if(!db.objectStoreNames.contains('tracks')) return res(null);
@@ -1187,7 +1187,7 @@ const scroll=(function(){
     // async load cover art if available
     if(t.hasCover){
       (function(trackId){
-        const req=indexedDB.open('eurogarden_cms',2);
+        const req=indexedDB.open('eurogarden_cms',3);
         req.onsuccess=e=>{
           const db=e.target.result;
           if(!db.objectStoreNames.contains('covers')) return;
@@ -1247,7 +1247,7 @@ const scroll=(function(){
 
   function getPhotoFromDB(id){
     return new Promise(res=>{
-      const req=indexedDB.open('eurogarden_cms',2);
+      const req=indexedDB.open('eurogarden_cms',3);
       req.onsuccess=e=>{
         const db=e.target.result;
         if(!db.objectStoreNames.contains('photos')) return res(null);
