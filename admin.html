@@ -679,7 +679,7 @@ function saveArtist(){
     location:document.getElementById('a_loc').value.trim(),
     tags,bio:document.getElementById('a_bio').value.trim(),
     fullBio:document.getElementById('a_fullbio').value.trim(),
-    grad:selGrad,
+    grad:existing?.grad||'linear-gradient(150deg,#0d0d1a,#1a0d28)',
     hasPhoto:pendingPhoto?true:(existing?.hasPhoto||false),
     links:{bandcamp:document.getElementById('a_bc').value.trim(),
       ra:document.getElementById('a_ra').value.trim(),
