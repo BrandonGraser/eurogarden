@@ -829,26 +829,28 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 })();
 
 /* ── DATA ─────────────────────────────────── */
-const TRACKS=[
-  {id:1,n:'01',name:'Tiergarten',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'6:47',g1:'#0d0d1e',g2:'#16213e'},
-  {id:2,n:'02',name:'Glass Cities',artist:'Sable Moor',album:'Static Gardens LP',dur:'5:12',g1:'#0a1a0a',g2:'#0d2010'},
-  {id:3,n:'03',name:'Periphery',artist:'Rausch',album:'Rausch LP',dur:'7:33',g1:'#1a0a0a',g2:'#2a0d0d'},
-  {id:4,n:'04',name:'Neon Meridian',artist:'Celestine V',album:'Abandon Frequencies',dur:'4:58',g1:'#0d0a1f',g2:'#1a0d30'},
-  {id:5,n:'05',name:'Collapse Theory',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'8:01',g1:'#1a1a08',g2:'#252510'},
-  {id:6,n:'06',name:'Surface Distortion',artist:'Midnight Canal',album:'Nacht Schicht Vol.2',dur:'6:22',g1:'#081515',g2:'#0d2020'},
-  {id:7,n:'07',name:'Iron Garden',artist:'Plomb',album:'Iron Garden LP',dur:'5:45',g1:'#1a0a14',g2:'#2a0d1e'},
-  {id:8,n:'08',name:'Eastern Europa',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'7:14',g1:'#0a1a14',g2:'#0d2018'},
-  {id:9,n:'09',name:'Séquence Noire',artist:'Celestine V',album:'Abandon Frequencies',dur:'5:30',g1:'#180d1a',g2:'#200a25'},
-  {id:10,n:'10',name:'Magnetfeld',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'9:02',g1:'#141408',g2:'#1e1e0a'},
+const DEFAULT_TRACKS=[
+  {id:1,n:'01',name:'Tiergarten',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'6:47',g1:'#0d0d1e',g2:'#16213e',hasFile:false},
+  {id:2,n:'02',name:'Glass Cities',artist:'Sable Moor',album:'Static Gardens LP',dur:'5:12',g1:'#0a1a0a',g2:'#0d2010',hasFile:false},
+  {id:3,n:'03',name:'Periphery',artist:'Rausch',album:'Rausch LP',dur:'7:33',g1:'#1a0a0a',g2:'#2a0d0d',hasFile:false},
+  {id:4,n:'04',name:'Neon Meridian',artist:'Celestine V',album:'Abandon Frequencies',dur:'4:58',g1:'#0d0a1f',g2:'#1a0d30',hasFile:false},
+  {id:5,n:'05',name:'Collapse Theory',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'8:01',g1:'#1a1a08',g2:'#252510',hasFile:false},
+  {id:6,n:'06',name:'Surface Distortion',artist:'Midnight Canal',album:'Nacht Schicht Vol.2',dur:'6:22',g1:'#081515',g2:'#0d2020',hasFile:false},
+  {id:7,n:'07',name:'Iron Garden',artist:'Plomb',album:'Iron Garden LP',dur:'5:45',g1:'#1a0a14',g2:'#2a0d1e',hasFile:false},
+  {id:8,n:'08',name:'Eastern Europa',artist:'Void Circuit',album:'Concrete Hymns EP',dur:'7:14',g1:'#0a1a14',g2:'#0d2018',hasFile:false},
+  {id:9,n:'09',name:'Séquence Noire',artist:'Celestine V',album:'Abandon Frequencies',dur:'5:30',g1:'#180d1a',g2:'#200a25',hasFile:false},
+  {id:10,n:'10',name:'Magnetfeld',artist:'Falk Dreher',album:'Collapse Theory 12"',dur:'9:02',g1:'#141408',g2:'#1e1e0a',hasFile:false},
 ];
-const ARTISTS=[
-  {name:'VOID CIRCUIT',tags:['Techno','Industrial','Berlin'],bio:'Duo based between New York and Leipzig. Their sound draws from the industrial heritage of both cities — metallic, percussive, unapologetic. Two LPs on Eurogarden, multiple international tours.',grad:'linear-gradient(150deg,#0d0d1a,#1a0d28)'},
-  {name:'SABLE MOOR',tags:['Ambient','Drone','Experimental'],bio:'Composer and sound sculptor from Reykjavík. Works with field recordings, degraded cassette, and custom-built oscillators. Releases on Eurogarden and The Quietus Music.',grad:'linear-gradient(150deg,#081408,#0a1e08)'},
-  {name:'RAUSCH',tags:['EBM','Coldwave','Post-Punk'],bio:'Berlin-based project rooted in hardcore and punk. RAUSCH blends cold synthesizer textures with aggressive rhythm structures. Their debut LP sold out in 48 hours.',grad:'linear-gradient(150deg,#180808,#280d0d)'},
-  {name:'CELESTINE V',tags:['Electronic','Experimental','Avant-pop'],bio:'Paris-trained composer building layered worlds between pop sensibility and avant-garde form. First European signing to Eurogarden. Residency at Centre Pompidou, 2024.',grad:'linear-gradient(150deg,#0d0a1f,#1a0d2e)'},
-  {name:'FALK DREHER',tags:['Techno','Minimal','Modular'],bio:'Frankfurt producer with a decade-long career in modular synthesis. Known for hypnotic, evolving sets. Regular at Berghain and Tresor.',grad:'linear-gradient(150deg,#141408,#1e1e0a)'},
-  {name:'MIDNIGHT CANAL',tags:['Ambient','Techno','Atmospheric'],bio:'Anonymous producer from Rotterdam. Each release is untitled and accompanied only by a handwritten note. The Nacht Schicht series has achieved cult status among collectors.',grad:'linear-gradient(150deg,#081414,#0d1e1e)'},
+const DEFAULT_ARTISTS=[
+  {id:101,name:'VOID CIRCUIT',tags:['Techno','Industrial','Berlin'],bio:'Duo based between New York and Leipzig. Their sound draws from the industrial heritage of both cities — metallic, percussive, unapologetic.',grad:'linear-gradient(150deg,#0d0d1a,#1a0d28)',location:'New York / Leipzig',fullBio:'Duo based between New York and Leipzig. Their sound draws from the industrial heritage of both cities — metallic, percussive, unapologetic. Two LPs on Eurogarden, multiple international tours.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:102,name:'SABLE MOOR',tags:['Ambient','Drone','Experimental'],bio:'Composer and sound sculptor from Reykjavík. Works with field recordings, degraded cassette, and custom-built oscillators.',grad:'linear-gradient(150deg,#081408,#0a1e08)',location:'Reykjavík',fullBio:'Composer and sound sculptor from Reykjavík. Works with field recordings, degraded cassette, and custom-built oscillators. Releases on Eurogarden and The Quietus Music.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:103,name:'RAUSCH',tags:['EBM','Coldwave','Post-Punk'],bio:'Berlin-based project rooted in hardcore and punk. RAUSCH blends cold synthesizer textures with aggressive rhythm structures.',grad:'linear-gradient(150deg,#180808,#280d0d)',location:'Berlin',fullBio:'Berlin-based project rooted in hardcore and punk. RAUSCH blends cold synthesizer textures with aggressive rhythm structures. Their debut LP sold out in 48 hours.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:104,name:'CELESTINE V',tags:['Electronic','Experimental','Avant-pop'],bio:'Paris-trained composer building layered worlds between pop sensibility and avant-garde form.',grad:'linear-gradient(150deg,#0d0a1f,#1a0d2e)',location:'Paris',fullBio:'Paris-trained composer building layered worlds between pop sensibility and avant-garde form. First European signing to Eurogarden. Residency at Centre Pompidou, 2024.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:105,name:'FALK DREHER',tags:['Techno','Minimal','Modular'],bio:'Frankfurt producer with a decade-long career in modular synthesis. Known for hypnotic, evolving sets.',grad:'linear-gradient(150deg,#141408,#1e1e0a)',location:'Frankfurt',fullBio:'Frankfurt producer with a decade-long career in modular synthesis. Known for hypnotic, evolving sets. Regular at Berghain and Tresor.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
+  {id:106,name:'MIDNIGHT CANAL',tags:['Ambient','Techno','Atmospheric'],bio:'Anonymous producer from Rotterdam. The Nacht Schicht series has achieved cult status among collectors.',grad:'linear-gradient(150deg,#081414,#0d1e1e)',location:'Rotterdam',fullBio:'Anonymous producer from Rotterdam. Each release is untitled and accompanied only by a handwritten note. The Nacht Schicht series has achieved cult status among collectors.',hasPhoto:false,links:{bandcamp:'',ra:'',instagram:'',spotify:''}},
 ];
+const TRACKS=(()=>{try{const d=localStorage.getItem('eg_tracks');return d?JSON.parse(d):[...DEFAULT_TRACKS];}catch(e){return[...DEFAULT_TRACKS];}})();
+const ARTISTS=(()=>{try{const d=localStorage.getItem('eg_artists');return d?JSON.parse(d):[...DEFAULT_ARTISTS];}catch(e){return[...DEFAULT_ARTISTS];}})();
 const POSTERS=[
   {artist:'VOID\nCIRCUIT',title:'Concrete Hymns',event:'RECORD RELEASE',venue:'Nowadays · Ridgewood, NY',date:'18 JAN 2025',bg:'#090912',tc:'#fff',w:220,h:300,x:4,y:8,rot:-3.5},
   {artist:'RAUSCH',title:'Rausch LP Launch',event:'ALBUM TOUR',venue:'Berghain · Berlin',date:'4 MAR 2025',bg:'#120808',tc:'#fff',w:190,h:270,x:23,y:5,rot:2.5},
