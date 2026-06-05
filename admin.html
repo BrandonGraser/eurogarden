@@ -19,37 +19,37 @@ a{color:inherit;text-decoration:none}
 #gate{position:fixed;inset:0;background:#000;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
 #gate.gone{display:none}
 .gate-logo{font-family:var(--font-d);font-weight:800;font-size:3rem;letter-spacing:.08em}
-.gate-sub{font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)}
-.gate-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-c);font-size:1.4rem;padding:.65rem 0;width:300px;outline:none;text-align:center;letter-spacing:.08em}
+.gate-sub{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.gate-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-c);font-size:1rem;padding:.65rem 0;width:300px;outline:none;text-align:center;letter-spacing:.08em}
 .gate-input::placeholder{color:rgba(255,255,255,.18)}
-.gate-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.1em;padding:.7rem 2.5rem;cursor:pointer;transition:background .2s,color .2s}
+.gate-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.1em;padding:.7rem 2.5rem;cursor:pointer;transition:background .2s,color .2s}
 .gate-btn:hover{background:#fff;color:#000}
-.gate-err{color:var(--red);font-size:1.4rem;letter-spacing:.1em;min-height:1.2rem}
+.gate-err{color:var(--red);font-size:1rem;letter-spacing:.1em;min-height:1.2rem}
 
 /* ── LAYOUT ── */
 #admin{display:none;flex-direction:column;min-height:100vh}
 #admin.on{display:flex}
 .adm-hd{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;background:rgba(0,0,0,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--dim)}
 .adm-logo{font-family:var(--font-d);font-weight:800;font-size:1.5rem;letter-spacing:.1em}
-.adm-logo em{font-style:normal;color:rgba(255,255,255,.3);font-size:1.4rem;letter-spacing:.1em;font-family:var(--font-c);font-weight:400;margin-left:.8rem}
+.adm-logo em{font-style:normal;color:rgba(255,255,255,.3);font-size:1rem;letter-spacing:.1em;font-family:var(--font-c);font-weight:400;margin-left:.8rem}
 .hd-right{display:flex;gap:1.2rem;align-items:center}
-.btn-site{color:rgba(255,255,255,.38);font-size:1.4rem;letter-spacing:.08em;transition:color .2s}
+.btn-site{color:rgba(255,255,255,.38);font-size:1rem;letter-spacing:.08em;transition:color .2s}
 .btn-site:hover{color:#fff}
-.btn-save{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.1em;padding:.6rem 1.8rem;cursor:pointer;transition:opacity .2s}
+.btn-save{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.1em;padding:.6rem 1.8rem;cursor:pointer;transition:opacity .2s}
 .btn-save:hover{opacity:.82}
 .btn-save.ok{background:#1a3a1a;color:#4caf50}
 
 /* ── TABS ── */
 .adm-tabs{display:flex;border-bottom:1px solid var(--dim);padding:0 2.5rem;background:rgba(0,0,0,.5)}
-.tab-btn{background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.32);font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.1em;padding:1.1rem 1.5rem;cursor:pointer;transition:color .2s,border-color .2s;text-transform:uppercase}
+.tab-btn{background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.32);font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.1em;padding:1.1rem 1.5rem;cursor:pointer;transition:color .2s,border-color .2s;text-transform:uppercase}
 .tab-btn.on{color:#fff;border-bottom-color:#fff}
 
 /* ── CONTENT ── */
 .adm-body{flex:1;padding:2.5rem;max-width:1100px;margin:0 auto;width:100%}
 .sec-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.8rem;padding-bottom:1.2rem;border-bottom:1px solid var(--dim)}
 .sec-title{font-family:var(--font-d);font-weight:800;font-size:1.8rem;letter-spacing:.1em}
-.sec-sub{color:rgba(255,255,255,.3);font-size:1.4rem;letter-spacing:.06em;margin-top:.3rem}
-.btn-add{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.6);font-family:var(--font-c);font-size:1.4rem;letter-spacing:.08em;padding:.55rem 1.4rem;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.sec-sub{color:rgba(255,255,255,.3);font-size:1rem;letter-spacing:.06em;margin-top:.3rem}
+.btn-add{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.6);font-family:var(--font-c);font-size:1rem;letter-spacing:.08em;padding:.55rem 1.4rem;cursor:pointer;transition:all .2s;text-transform:uppercase}
 .btn-add:hover{border-color:#fff;color:#fff}
 
 /* ── TRACK ROWS ── */
@@ -58,17 +58,17 @@ a{color:inherit;text-decoration:none}
 .tr:hover{background:rgba(255,255,255,.03)}
 .tr.empty{border-style:dashed;border-color:rgba(255,255,255,.07);background:transparent;cursor:pointer}
 .tr.empty:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.015)}
-.tr-n{font-family:var(--font-d);font-weight:800;color:rgba(255,255,255,.22);font-size:1.4rem}
-.tr-name{font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.04em}
-.tr-meta{color:rgba(255,255,255,.32);font-size:1.4rem;margin-top:.15rem}
-.tr-dur{color:rgba(255,255,255,.38);font-size:1.4rem;white-space:nowrap}
+.tr-n{font-family:var(--font-d);font-weight:800;color:rgba(255,255,255,.22);font-size:1rem}
+.tr-name{font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.04em}
+.tr-meta{color:rgba(255,255,255,.32);font-size:1rem;margin-top:.15rem}
+.tr-dur{color:rgba(255,255,255,.38);font-size:1rem;white-space:nowrap}
 .tr-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0}
 .tr-dot.ok{background:#4caf50}
 .tr-acts{display:flex;gap:.5rem}
-.btn-sm{background:transparent;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.38);font-size:1.4rem;letter-spacing:.1em;padding:.35rem .75rem;cursor:pointer;transition:all .2s;font-family:var(--font-c)}
+.btn-sm{background:transparent;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.38);font-size:1rem;letter-spacing:.1em;padding:.35rem .75rem;cursor:pointer;transition:all .2s;font-family:var(--font-c)}
 .btn-sm:hover{border-color:rgba(255,255,255,.45);color:#fff}
 .btn-sm.del:hover{border-color:var(--red);color:var(--red)}
-.tr-empty-lbl{color:rgba(255,255,255,.18);font-size:1.4rem;letter-spacing:.08em;text-transform:uppercase;grid-column:2/-1}
+.tr-empty-lbl{color:rgba(255,255,255,.18);font-size:1rem;letter-spacing:.08em;text-transform:uppercase;grid-column:2/-1}
 
 /* ── ARTIST CARDS ── */
 .artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
@@ -76,15 +76,15 @@ a{color:inherit;text-decoration:none}
 .aca:hover{background:rgba(255,255,255,.03)}
 .aca-swatch{height:90px}
 .aca-body{padding:1.3rem}
-.aca-name{font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.07em;margin-bottom:.45rem}
+.aca-name{font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.07em;margin-bottom:.45rem}
 .aca-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.65rem}
-.aca-tag{font-size:1.4rem;letter-spacing:.1em;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.14);padding:.12rem .45rem}
-.aca-bio{font-size:1.4rem;color:rgba(255,255,255,.35);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.aca-tag{font-size:1rem;letter-spacing:.1em;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.14);padding:.12rem .45rem}
+.aca-bio{font-size:1rem;color:rgba(255,255,255,.35);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .aca-acts{display:flex;gap:.5rem;margin-top:1rem}
 .add-card{border:1px dashed rgba(255,255,255,.09);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;cursor:pointer;min-height:220px;transition:border-color .2s,background .15s}
 .add-card:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.015)}
 .add-card-icon{font-size:2.5rem;color:rgba(255,255,255,.12)}
-.add-card-lbl{font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.add-card-lbl{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22)}
 
 /* ── TAB CONTENT ── */
 .tab-pane{display:none}.tab-pane.on{display:block}
@@ -96,13 +96,13 @@ a{color:inherit;text-decoration:none}
 .overlay.on .modal{transform:translateY(0)}
 .modal::-webkit-scrollbar{display:none}
 .modal-hd{font-family:var(--font-d);font-weight:800;font-size:1.6rem;letter-spacing:.1em;margin-bottom:1.8rem}
-.modal-x{position:absolute;top:1.6rem;right:1.6rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.4rem;cursor:pointer;transition:color .2s;line-height:1}
+.modal-x{position:absolute;top:1.6rem;right:1.6rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1rem;cursor:pointer;transition:color .2s;line-height:1}
 .modal-x:hover{color:#fff}
 
 /* ── FORM ── */
 .fg{margin-bottom:1.4rem}
-.fl{display:block;font-size:1.4rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:.55rem}
-.fi,.fs,.fta{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.11);color:#fff;font-family:var(--font-c);font-size:1.4rem;padding:.72rem .9rem;outline:none;transition:border-color .2s}
+.fl{display:block;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:.55rem}
+.fi,.fs,.fta{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.11);color:#fff;font-family:var(--font-c);font-size:1rem;padding:.72rem .9rem;outline:none;transition:border-color .2s}
 .fi:focus,.fs:focus,.fta:focus{border-color:rgba(255,255,255,.35)}
 .fs{appearance:none;cursor:pointer}
 .fta{resize:vertical;min-height:90px;line-height:1.6}
@@ -114,10 +114,10 @@ a{color:inherit;text-decoration:none}
 .drop:hover,.drop.over{border-color:rgba(255,255,255,.38);background:rgba(255,255,255,.02)}
 .drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .drop-icon{font-size:2rem;color:rgba(255,255,255,.2);margin-bottom:.5rem}
-.drop-txt{font-size:1.4rem;letter-spacing:.06em;color:rgba(255,255,255,.3)}
-.drop-sub{font-size:1.4rem;color:rgba(255,255,255,.18);margin-top:.25rem}
-.drop-file{font-size:1.4rem;color:rgba(255,255,255,.65);margin-top:.6rem}
-.drop-dur{font-size:1.4rem;color:rgba(255,255,255,.35);margin-top:.2rem}
+.drop-txt{font-size:1rem;letter-spacing:.06em;color:rgba(255,255,255,.3)}
+.drop-sub{font-size:1rem;color:rgba(255,255,255,.18);margin-top:.25rem}
+.drop-file{font-size:1rem;color:rgba(255,255,255,.65);margin-top:.6rem}
+.drop-dur{font-size:1rem;color:rgba(255,255,255,.35);margin-top:.2rem}
 
 /* ── COLOR ── */
 .color-row{display:flex;gap:.7rem;align-items:center}
@@ -129,7 +129,7 @@ a{color:inherit;text-decoration:none}
 .photo-z:hover{border-color:rgba(255,255,255,.35)}
 .photo-z img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .photo-z input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
-.photo-z-lbl{font-size:1.4rem;letter-spacing:.08em;color:rgba(255,255,255,.22);text-transform:uppercase}
+.photo-z-lbl{font-size:1rem;letter-spacing:.08em;color:rgba(255,255,255,.22);text-transform:uppercase}
 .photo-z-icon{font-size:2.2rem;color:rgba(255,255,255,.12)}
 
 /* ── GRAD PRESETS ── */
@@ -142,20 +142,20 @@ a{color:inherit;text-decoration:none}
 
 /* ── MODAL FOOTER ── */
 .mfoot{display:flex;gap:1rem;justify-content:flex-end;margin-top:2rem;padding-top:1.3rem;border-top:1px solid var(--dim)}
-.btn-cancel{background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.45);font-family:var(--font-c);font-size:1.4rem;letter-spacing:.08em;padding:.6rem 1.4rem;cursor:pointer;transition:all .2s}
+.btn-cancel{background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.45);font-family:var(--font-c);font-size:1rem;letter-spacing:.08em;padding:.6rem 1.4rem;cursor:pointer;transition:all .2s}
 .btn-cancel:hover{border-color:rgba(255,255,255,.45);color:#fff}
-.btn-ok{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:.1em;padding:.6rem 1.8rem;cursor:pointer;transition:opacity .2s}
+.btn-ok{background:#fff;color:#000;border:none;font-family:var(--font-d);font-weight:800;font-size:1rem;letter-spacing:.1em;padding:.6rem 1.8rem;cursor:pointer;transition:opacity .2s}
 .btn-ok:hover{opacity:.82}
 
 /* ── DEFAULT CHECKBOX ── */
 .default-check-row{border-top:1px solid var(--dim);padding-top:1.2rem}
-.default-check-label{display:flex;align-items:center;gap:.85rem;cursor:pointer;font-size:1.4rem;color:rgba(255,255,255,.6);transition:color .2s}
+.default-check-label{display:flex;align-items:center;gap:.85rem;cursor:pointer;font-size:1rem;color:rgba(255,255,255,.6);transition:color .2s}
 .default-check-label:hover{color:#fff}
 .default-check-label input[type=checkbox]{width:18px;height:18px;accent-color:#fff;cursor:pointer;flex-shrink:0}
-.tr-default-badge{font-size:1.4rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:.15rem .55rem;white-space:nowrap;font-family:var(--font-c)}
+.tr-default-badge{font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:.15rem .55rem;white-space:nowrap;font-family:var(--font-c)}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:2rem;right:2rem;z-index:9000;background:#111;border:1px solid var(--dim);padding:.9rem 1.6rem;font-size:1.4rem;letter-spacing:.1em;transform:translateY(1.5rem);opacity:0;transition:all .28s;pointer-events:none}
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:9000;background:#111;border:1px solid var(--dim);padding:.9rem 1.6rem;font-size:1rem;letter-spacing:.1em;transform:translateY(1.5rem);opacity:0;transition:all .28s;pointer-events:none}
 .toast.on{transform:translateY(0);opacity:1}
 </style>
 </head>
