@@ -115,9 +115,11 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   transition:opacity .4s,transform .4s;
 }
 #mini-player.on{opacity:1;pointer-events:auto;transform:translateY(0)}
-.mp-disc{width:40px;height:40px;border-radius:50%;background:#111;border:1px solid rgba(255,255,255,.22);position:relative;flex-shrink:0;cursor:pointer}
-.mp-disc::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(255,255,255,.08)}
-.mp-disc::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#0a0a0a;border:1px solid rgba(255,255,255,.2)}
+.mp-disc{width:48px;height:48px;border-radius:3px;background:#111;border:1px solid rgba(255,255,255,.18);position:relative;flex-shrink:0;cursor:pointer;overflow:hidden}
+.mp-disc-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.35}
+.mp-disc-fallback::before{content:'';position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(255,255,255,.4)}
+.mp-disc-fallback::after{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(255,255,255,.2)}
+#mpCoverImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
 #mini-player.spin .mp-disc{animation:vspin 2s linear infinite}
 .mp-text{display:flex;flex-direction:column;min-width:110px}
 .mp-name{font-family:var(--font-d);font-size:1.3rem;letter-spacing:.05em}
