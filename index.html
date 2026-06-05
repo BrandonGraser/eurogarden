@@ -1078,11 +1078,44 @@ const scroll=(function(){
   function prog(p){pf.style.strokeDashoffset=C-(p/100)*C;}
   function play(){playing=true;disc.classList.add('playing');scene.classList.add('playing');needle.classList.add('playing');mp.classList.add('spin');audio.play().catch(()=>{});}
   function stop(){playing=false;disc.classList.remove('playing');scene.classList.remove('playing');needle.classList.remove('playing');mp.classList.remove('spin');audio.pause();}
+  function updatePlayBtn(){
+    const btn=document.getElementById('mpPlay');
+    if(btn) btn.innerHTML=playing?'&#9646;&#9646;':'&#9654;';
+  }
+  const origPlay=play,origStop=stop;
+  play=function(){origPlay();updatePlayBtn();};
+  stop=function(){origStop();updatePlayBtn();};
+
   disc.addEventListener('click',()=>playing?stop():play());
   disc.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();playing?stop():play();}});
   audio.addEventListener('timeupdate',()=>{if(audio.duration)prog((audio.currentTime/audio.duration)*100);});
-  audio.addEventListener('ended',()=>{stop();prog(0);});
-  mp.addEventListener('click',()=>playing?stop():play());
+  audio.addEventListener('ended',()=>{
+    // auto-advance to next track
+    const active=document.querySelector('.track.active');
+    if(active){
+      const tracks=[...document.querySelectorAll('.track')];
+      const idx=tracks.indexOf(active);
+      const next=tracks[idx+1];
+      if(next){const id=parseInt(next.dataset.id);const t=TRACKS.find(x=>x.id===id);if(t)window.loadTrack(t);else{stop();prog(0);}}
+      else{stop();prog(0);}
+    }else{stop();prog(0);}
+  });
+  document.getElementById('mpPlay')?.addEventListener('click',e=>{e.stopPropagation();playing?stop():play();});
+  document.getElementById('mpPrev')?.addEventListener('click',e=>{
+    e.stopPropagation();
+    const tracks=[...document.querySelectorAll('.track')];
+    const idx=tracks.findIndex(t=>t.classList.contains('active'));
+    const prev=tracks[Math.max(0,idx-1)];
+    if(prev){const id=parseInt(prev.dataset.id);const t=TRACKS.find(x=>x.id===id);if(t)window.loadTrack(t);}
+  });
+  document.getElementById('mpNext')?.addEventListener('click',e=>{
+    e.stopPropagation();
+    const tracks=[...document.querySelectorAll('.track')];
+    const idx=tracks.findIndex(t=>t.classList.contains('active'));
+    const next=tracks[Math.min(tracks.length-1,idx+1)];
+    if(next){const id=parseInt(next.dataset.id);const t=TRACKS.find(x=>x.id===id);if(t)window.loadTrack(t);}
+  });
+  document.getElementById('mpDisc')?.addEventListener('click',e=>{e.stopPropagation();playing?stop():play();});
   function getTrackBlob(id){
     return new Promise(res=>{
       const req=indexedDB.open('eurogarden_cms',2);
