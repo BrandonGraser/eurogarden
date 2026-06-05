@@ -1081,7 +1081,7 @@ const scroll=(function(){
   function stop(){playing=false;disc.classList.remove('playing');scene.classList.remove('playing');needle.classList.remove('playing');mp.classList.remove('spin');audio.pause();}
   function updatePlayBtn(){
     const btn=document.getElementById('mpPlay');
-    if(btn) btn.innerHTML=playing?'&#9646;&#9646;':'&#9654;';
+    if(btn) btn.textContent=playing?'⏸':'▶';
   }
   const origPlay=play,origStop=stop;
   play=function(){origPlay();updatePlayBtn();};
