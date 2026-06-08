@@ -955,51 +955,92 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 <script>
 /* ── LOADER ───────────────────────────────── */
 (function(){
-  const loader  = document.getElementById('loader');
-  const slider  = document.getElementById('volSlider');
-  const pctEl   = document.getElementById('ldPctNum');
-  const audio   = document.getElementById('audio');
-  const spkL    = document.getElementById('spkL');
-  const spkR    = document.getElementById('spkR');
-  let dismissed = false, audioStarted = false;
+  const loader   = document.getElementById('loader');
+  const slider   = document.getElementById('volSlider');
+  const pctEl    = document.getElementById('ldPctNum');
+  const pctWrap  = document.getElementById('ld-pct');
+  const audio    = document.getElementById('audio');
+  const spkL     = document.getElementById('spkL');
+  const spkR     = document.getElementById('spkR');
+  const ldGlow   = document.getElementById('ld-glow');
+  const ldDot    = document.getElementById('ldDot');
+  const ldStatus = document.getElementById('ld-status-txt');
+  const ldCue    = document.getElementById('ld-cue');
+  const bars     = [...document.querySelectorAll('.ld-bar')];
+  let dismissed  = false, audioStarted = false, vizV = 0;
 
+  /* ── track fill: white → red as volume rises ── */
   function setTrackFill(v){
-    slider.style.background=`linear-gradient(to right,#fff ${v}%,rgba(255,255,255,.14) ${v}%)`;
+    const p=v/100, c=Math.pow(p,1.4);
+    const r=Math.round(255+(196-255)*c);
+    const g=Math.round(255+(30-255)*c);
+    const b=Math.round(255+(58-255)*c);
+    slider.style.background=`linear-gradient(to right,rgb(${r},${g},${b}) ${v}%,rgba(255,255,255,.14) ${v}%)`;
   }
   setTrackFill(0);
+
+  /* ── frequency bar RAF loop ── */
+  (function animBars(){
+    bars.forEach(b=>{
+      const noise=0.25+Math.random()*0.75;
+      const h=3+(90-3)*Math.pow(vizV,.65)*noise;
+      const intensity=0.08+vizV*0.72;
+      const red=vizV>0.55;
+      b.style.height=h+'%';
+      b.style.background=red?`rgba(196,30,58,${intensity})`:`rgba(255,255,255,${intensity})`;
+    });
+    requestAnimationFrame(animBars);
+  })();
 
   slider.addEventListener('input',function(){
     if(dismissed) return;
     const v=parseInt(this.value);
     const p=v/100;
+    vizV=p;
 
     pctEl.textContent=v;
     setTrackFill(v);
 
-    // volume — UI shows 0–100% but actual max is 75%
+    /* volume */
     audio.volume=p*0.35;
     if(!audioStarted&&v>0){
       audioStarted=true;
       audio.currentTime=0;
       audio.play().catch(()=>{});
-      // sync vinyl state
       document.getElementById('vinylDisc')?.classList.add('playing');
       document.getElementById('vinylScene')?.classList.add('playing');
       document.getElementById('needleArm')?.classList.add('playing');
       document.getElementById('mini-player')?.classList.add('spin');
     }
 
-    // speaker glow — scales from nothing to a warm halo
-    const glow=p*32;
-    const alpha=(p*0.32).toFixed(3);
-    const glowStr=`drop-shadow(0 0 ${glow}px rgba(255,255,255,${alpha}))`;
+    /* speaker glow: white → red */
+    const glow=p*40, alpha=(p*0.38).toFixed(3);
+    const c=Math.pow(p,1.2);
+    const sr=Math.round(255+(196-255)*c), sg=Math.round(255+(30-255)*c), sb=Math.round(255+(58-255)*c);
+    const glowStr=`drop-shadow(0 0 ${glow}px rgba(${sr},${sg},${sb},${alpha}))`;
     spkL.style.filter=glowStr;
     spkR.style.filter=glowStr;
 
-    // woofer pulse speed — 4s → 0.4s as volume rises
+    /* red atmospheric bloom */
+    ldGlow.style.opacity=String(p*0.95);
+
+    /* pct number color */
+    pctWrap.style.color=p>0.5?`rgb(${sr},${sg},${sb})`:'';
+
+    /* woofer pulse speed */
     document.documentElement.style.setProperty('--wf-spd',Math.max(0.38,4-p*3.6)+'s');
 
-    // enter at 100%
+    /* status readout */
+    if(v===0){ldStatus.textContent='STANDBY';ldDot.classList.remove('live');}
+    else if(v<40){ldStatus.textContent='SIGNAL DETECTED';ldDot.classList.add('live');}
+    else if(v<75){ldStatus.textContent='LEVEL RISING';ldDot.classList.add('live');}
+    else if(v<100){ldStatus.textContent='PRIMED';ldDot.classList.add('live');}
+    else{ldStatus.textContent='ENTERING';ldDot.classList.add('live');}
+
+    /* cue text */
+    if(v===0){ldCue.style.animation='ldBlink 2s ease-in-out infinite';ldCue.style.opacity='';}
+    else{ldCue.style.animation='none';ldCue.style.opacity='1';}
+
     if(v>=100&&!dismissed){ dismissed=true; dismiss(); }
   });
 
