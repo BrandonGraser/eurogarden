@@ -1021,8 +1021,8 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
     /* pct number color */
     pctWrap.style.color=p>0.5?`rgb(${sr},${sg},${sb})`:'';
 
-    /* woofer pulse speed */
-    document.documentElement.style.setProperty('--wf-spd',Math.max(0.38,4-p*3.6)+'s');
+    /* woofer pulse speed — max ~1.5s at full volume (was 0.38s) */
+    document.documentElement.style.setProperty('--wf-spd',Math.max(1.5,4-p*2.5)+'s');
 
     /* status readout */
     if(v===0){ldStatus.textContent='STANDBY';ldDot.classList.remove('live');}
