@@ -436,7 +436,8 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 
 /* ── RESPONSIVE ──────────────────── */
 @media(max-width:900px){
-  #hero .panel-inner{grid-template-columns:1fr;padding:5rem 5vw 5rem;text-align:center;gap:2.5rem;overflow-y:auto}
+  #hero .panel-inner{grid-template-columns:1fr;grid-template-rows:auto auto auto;padding:5rem 5vw 0;text-align:center;gap:2.5rem;overflow-y:auto}
+  #hero .panel-inner>.ticker-wrap{grid-column:1/-1}
   #hero .panel-inner::before{display:none}
   .vinyl-wrap{order:-1}
   .vinyl-label{position:relative;bottom:auto;margin-top:.8rem;text-align:center}
