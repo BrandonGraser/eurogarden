@@ -465,8 +465,9 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 /* ── TICKER ───────────────────────── */
 .ticker-wrap{
   overflow:hidden;border-top:1px solid rgba(255,255,255,.07);
-  padding:.48rem 0;margin-top:1.8rem;position:relative;z-index:2;
+  padding:.55rem 0;position:relative;z-index:2;
 }
+#hero .panel-inner>.ticker-wrap{grid-column:1/-1;align-self:end}
 .ticker-inner{
   display:flex;width:max-content;
   animation:ticker-run 30s linear infinite;
