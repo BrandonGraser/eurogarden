@@ -1022,13 +1022,6 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
     /* woofer pulse speed — max ~1.5s at full volume (was 0.38s) */
     document.documentElement.style.setProperty('--wf-spd',Math.max(1.5,4-p*2.5)+'s');
 
-    /* status readout */
-    if(v===0){ldStatus.textContent='STANDBY';ldDot.classList.remove('live');}
-    else if(v<40){ldStatus.textContent='SIGNAL DETECTED';ldDot.classList.add('live');}
-    else if(v<75){ldStatus.textContent='LEVEL RISING';ldDot.classList.add('live');}
-    else if(v<100){ldStatus.textContent='PRIMED';ldDot.classList.add('live');}
-    else{ldStatus.textContent='ENTERING';ldDot.classList.add('live');}
-
     /* cue text */
     if(v===0){ldCue.style.animation='ldBlink 2s ease-in-out infinite';ldCue.style.opacity='';}
     else{ldCue.style.animation='none';ldCue.style.opacity='1';}
