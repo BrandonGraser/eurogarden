@@ -1413,7 +1413,17 @@ const scroll=(function(){
     const card=document.createElement('div');card.className='poster-card';
     card.style.cssText=`left:${p.x}%;top:${p.y}%;width:${p.w}px;height:${p.h}px;transform:rotate(${p.rot}deg);z-index:${10+idx};`;
     const rev=document.createElement('div');rev.className='poster-reveal';rev.style.cssText=`width:${p.w}px;height:${p.h}px;`;
-    rev.innerHTML=`<div class="pr-label">TORN</div><div class="pr-sub">EUROGARDEN · eurogarden.net</div>`;
+    if(p.video){
+      rev.innerHTML=`<div class="poster-video-wrap"><iframe data-src="https://www.youtube.com/embed/${p.video}?autoplay=1&mute=1&enablejsapi=1" frameborder="0" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe><button class="poster-video-btn" data-muted="true" title="Toggle sound">🔇</button></div>`;
+      const btn=rev.querySelector('.poster-video-btn');
+      const iframe=rev.querySelector('iframe');
+      btn.addEventListener('click',()=>{
+        if(btn.dataset.muted==='true'){iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}','*');btn.textContent='🔊';btn.dataset.muted='false';}
+        else{iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}','*');btn.textContent='🔇';btn.dataset.muted='true';}
+      });
+    } else {
+      rev.innerHTML=`<div class="pr-label">TORN</div><div class="pr-sub">EUROGARDEN · eurogarden.net</div>`;
+    }
     const front=document.createElement('div');front.className='poster-front';
     const lines=p.artist.split('\n');const fs=lines.length>1?'2rem':'2.5rem';
     front.innerHTML=`<div class="poster-body" style="background:${p.bg}"><div><div class="pb-event" style="color:${p.tc}">${p.event}</div><div style="border-top:1px solid rgba(255,255,255,.1);margin-top:.4rem"></div></div><div><div class="pb-artist" style="color:${p.tc};font-size:${fs}">${lines.join('<br>')}</div><div class="pb-release">${p.title}</div></div><div><div class="pb-venue" style="color:${p.tc}">${p.venue}</div><div class="pb-date" style="color:${p.tc}">${p.date}</div><div class="pb-brand">EUROGARDEN</div></div></div>`;
@@ -1425,7 +1435,7 @@ const scroll=(function(){
       const dx=cx-sx,dy=cy-sy,dist=Math.sqrt(dx*dx+dy*dy),pr=Math.min(dist/240,1);
       front.style.transform=`translate(${dx*(0.4+pr*0.5)}px,${dy*(0.3+pr*0.4)}px) rotate(${dx*0.035}deg) scale(${1+pr*0.04})`;
       front.style.opacity=String(1-pr*0.15);
-      if(pr>=1){ripped=true;drag=false;front.style.transition='transform .7s cubic-bezier(.2,0,.8,1),opacity .6s';front.style.transform=`translate(${dx*3}px,${dy*1.5+80}px) rotate(${dx*0.08}deg) scale(1.05)`;front.style.opacity='0';setTimeout(()=>front.remove(),700);}
+      if(pr>=1){ripped=true;drag=false;front.style.transition='transform .7s cubic-bezier(.2,0,.8,1),opacity .6s';front.style.transform=`translate(${dx*3}px,${dy*1.5+80}px) rotate(${dx*0.08}deg) scale(1.05)`;front.style.opacity='0';setTimeout(()=>{front.remove();const iframe=rev.querySelector('iframe[data-src]');if(iframe){iframe.src=iframe.dataset.src;}},700);}
     }
     function u(){if(!drag||ripped)return;drag=false;front.style.transition='transform .45s cubic-bezier(.25,.46,.45,.94),opacity .45s';front.style.transform='';front.style.opacity='1';setTimeout(()=>front.style.transition='',450);}
     front.addEventListener('mousedown',e=>{s(e.clientX,e.clientY);e.preventDefault();});
