@@ -457,6 +457,160 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   .cf{flex-direction:column;gap:1rem;text-align:center}
   .cf-copy{text-align:center}
 }
+
+/* ══════════════════════════════════
+   SWAG LAYER
+══════════════════════════════════ */
+
+/* ── GLITCH ON MAIN TITLE ─────────── */
+.hw-main{position:relative;overflow:visible}
+.hw-main::before,.hw-main::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  font-family:var(--font-d);font-size:clamp(5rem,13vw,13.5rem);
+  line-height:.88;letter-spacing:-.01em;
+  pointer-events:none;white-space:nowrap;
+}
+.hw-main::before{
+  left:3px;color:rgba(255,255,255,.85);text-shadow:-3px 0 var(--red);
+  clip-path:inset(100% 0 0 0);
+  animation:glitch-a 12s infinite 2s;
+}
+.hw-main::after{
+  left:-3px;color:rgba(255,255,255,.85);text-shadow:3px 0 rgba(0,210,255,.5);
+  clip-path:inset(100% 0 0 0);
+  animation:glitch-b 12s infinite 2.2s;
+}
+@keyframes glitch-a{
+  0%,85%,100%{clip-path:inset(100% 0 0 0);transform:none}
+  87%{clip-path:inset(9% 0 70% 0);transform:skewX(-2deg)}
+  89%{clip-path:inset(58% 0 16% 0);transform:skewX(1.5deg)}
+  91%{clip-path:inset(100% 0 0 0);transform:none}
+}
+@keyframes glitch-b{
+  0%,85%,100%{clip-path:inset(100% 0 0 0);transform:none}
+  87%{clip-path:inset(40% 0 42% 0);transform:skewX(2deg)}
+  89%{clip-path:inset(75% 0 8% 0);transform:skewX(-1.5deg)}
+  91%{clip-path:inset(100% 0 0 0);transform:none}
+}
+
+/* ── TICKER ───────────────────────── */
+.ticker-wrap{
+  overflow:hidden;border-top:1px solid rgba(255,255,255,.07);
+  padding:.48rem 0;margin-top:1.8rem;position:relative;z-index:2;
+}
+.ticker-inner{
+  display:flex;width:max-content;
+  animation:ticker-run 30s linear infinite;
+}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{
+  font-family:var(--font-m);font-size:0.7rem;letter-spacing:.07em;
+  color:rgba(255,255,255,.2);text-transform:uppercase;
+  white-space:nowrap;padding:0 1.6rem;
+}
+.ticker-sep{color:var(--red);margin:0 .1rem}
+@keyframes ticker-run{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── HERO RED SCAN LINE ───────────── */
+.hero-scan{
+  position:absolute;left:0;right:0;height:1px;top:0;opacity:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(196,30,58,.6) 50%,transparent 100%);
+  pointer-events:none;z-index:4;
+  animation:scanline 11s ease-in-out infinite 5s;
+}
+@keyframes scanline{
+  0%{top:0%;opacity:0}4%{opacity:1}96%{opacity:.3}100%{top:100%;opacity:0}
+}
+
+/* ── HERO DIVIDER — RED TINT ──────── */
+#hero .panel-inner::before{
+  background:linear-gradient(to bottom,transparent,rgba(196,30,58,.28),transparent) !important;
+}
+
+/* ── LIVE DOT ─────────────────────── */
+.live-dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--red);margin-right:.65rem;vertical-align:middle;
+  position:relative;top:-.06em;
+  animation:dot-pulse 2.2s ease-in-out infinite;
+}
+@keyframes dot-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,.65)}
+  55%{box-shadow:0 0 0 6px rgba(196,30,58,0)}
+}
+
+/* ── SECTION WATERMARKS ───────────── */
+.panel-inner{position:relative}
+.section-wm{
+  position:absolute;right:3vw;bottom:-.08em;
+  font-family:var(--font-d);font-weight:800;
+  font-size:clamp(9rem,22vw,26rem);letter-spacing:-.04em;
+  color:rgba(255,255,255,.03);line-height:1;
+  pointer-events:none;z-index:0;user-select:none;
+}
+
+/* ── TRACK LEFT ACCENT BAR ────────── */
+.track::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);z-index:2;
+  transform:scaleY(0);transform-origin:bottom center;
+  transition:transform .2s ease;
+}
+.track:hover::before,.track.active::before{transform:scaleY(1)}
+
+/* ── TRACK STAGGERED ENTRANCE ─────── */
+@keyframes track-in{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:none}
+}
+.track{animation:track-in .38s ease both}
+
+/* ── RELEASES BACKGROUND GRID ─────── */
+#releases{
+  background-image:
+    linear-gradient(rgba(255,255,255,.011) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.011) 1px,transparent 1px);
+  background-size:58px 58px;
+}
+
+/* ── NAV LINK RED UNDERLINE ───────── */
+.nav-links a{position:relative}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:1px;background:var(--red);
+  transform:scaleX(0);transform-origin:left center;
+  transition:transform .22s ease;
+}
+.nav-links a.on::after,.nav-links a:hover::after{transform:scaleX(1)}
+
+/* ── VINYL RED GLOW WHEN PLAYING ──── */
+.vinyl-disc.playing{
+  filter:drop-shadow(0 0 30px rgba(196,30,58,.22)) drop-shadow(0 0 10px rgba(196,30,58,.15));
+}
+
+/* ── CONTACT MANIFESTO CURSOR ─────── */
+.contact-manifesto::after{
+  content:'_';color:var(--red);font-weight:800;
+  animation:blink-cur .9s step-end infinite;
+}
+@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── ARTIST CARD LIFT ─────────────── */
+.ac{transition:transform .32s cubic-bezier(.16,1,.3,1),box-shadow .32s ease,background .2s}
+.ac:hover{
+  transform:translateY(-6px);
+  box-shadow:0 28px 70px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.07);
+}
+
+/* ── POSTER HINT PULSE ────────────── */
+.poster-hint-txt{animation:hint-breathe 3.5s ease-in-out infinite}
+@keyframes hint-breathe{0%,100%{opacity:.18}50%{opacity:.38}}
+
+/* ── RED GLOW ON MINI PLAYER DISC ─── */
+#mini-player.spin .mp-disc{
+  box-shadow:0 0 14px rgba(196,30,58,.2);
+}
 </style>
 </head>
 <body>
