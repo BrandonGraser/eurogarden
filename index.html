@@ -144,14 +144,21 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   align-items:center;padding:7rem 5vw 0;gap:4vw;
   position:relative;overflow:hidden;
 }
-#hero .panel-inner::before{content:'';position:absolute;top:0;left:50%;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--dim),transparent);pointer-events:none;z-index:1}
-#hero .panel-inner::after{
-  content:'';position:absolute;inset:0;
+/* flower moved to .flower-bg real element */
+.flower-bg{
+  position:absolute;inset:0;
   background:url('flower.png') center/contain no-repeat;
-  opacity:.18;
-  filter:invert(1) blur(6px);
+  opacity:.17;
+  filter:url(#flower-liquid);
   transform:rotate(10deg) scale(0.825);
   pointer-events:none;z-index:0;
+  animation:flower-drift 24s ease-in-out infinite;
+}
+@keyframes flower-drift{
+  0%,100%{transform:rotate(10deg) scale(0.825)}
+  25%{transform:rotate(12.5deg) scale(0.845) skewX(.4deg)}
+  50%{transform:rotate(7.5deg) scale(0.815) skewY(.5deg)}
+  75%{transform:rotate(13deg) scale(0.84) skewX(-.3deg)}
 }
 .hero-word{z-index:2;position:relative}
 .hw-main{font-family:var(--font-d);font-size:clamp(5rem,13vw,13.5rem);line-height:.88;letter-spacing:-.01em;color:var(--white)}
