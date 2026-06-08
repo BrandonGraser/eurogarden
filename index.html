@@ -553,6 +553,12 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 .poster-hint-txt{animation:hint-breathe 3.5s ease-in-out infinite}
 @keyframes hint-breathe{0%,100%{opacity:.18}50%{opacity:.38}}
 
+/* ── POSTER VIDEO REVEAL ─────────── */
+.poster-video-wrap{position:absolute;inset:0;background:#000;overflow:hidden}
+.poster-video-wrap iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177%;height:100%;min-height:56.25%;border:none}
+.poster-video-btn{position:absolute;bottom:.5rem;right:.5rem;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:.8rem;padding:.28rem .55rem;cursor:pointer;z-index:10;transition:background .2s,border-color .2s;line-height:1}
+.poster-video-btn:hover{background:rgba(0,0,0,.95);border-color:rgba(255,255,255,.4)}
+
 /* ── RED GLOW ON MINI PLAYER DISC ─── */
 #mini-player.spin .mp-disc{
   box-shadow:0 0 14px rgba(196,30,58,.2);
