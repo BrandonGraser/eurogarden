@@ -1080,15 +1080,6 @@ const DEFAULT_ARTISTS=[
 ];
 const TRACKS=(()=>{try{const d=localStorage.getItem('eg_tracks');return d?JSON.parse(d):[...DEFAULT_TRACKS];}catch(e){return[...DEFAULT_TRACKS];}})();
 const ARTISTS=(()=>{try{const d=localStorage.getItem('eg_artists');return d?JSON.parse(d):[...DEFAULT_ARTISTS];}catch(e){return[...DEFAULT_ARTISTS];}})();
-const POSTERS=[
-  {artist:'VOID\nCIRCUIT',title:'Concrete Hymns',event:'RECORD RELEASE',venue:'Nowadays · Ridgewood, NY',date:'18 JAN 2025',bg:'#090912',tc:'#fff',w:220,h:300,x:4,y:8,rot:-3.5},
-  {artist:'RAUSCH',title:'Rausch LP Launch',event:'ALBUM TOUR',venue:'Berghain · Berlin',date:'4 MAR 2025',bg:'#120808',tc:'#fff',w:190,h:270,x:23,y:5,rot:2.5},
-  {artist:'SABLE\nMOOR',title:'Static Gardens',event:'EUROGARDEN PRESENTS',venue:'Le Guess Who? · Utrecht',date:'9 NOV 2024',bg:'#080f08',tc:'#e8ffe8',w:205,h:290,x:41,y:12,rot:-5},
-  {artist:'CELESTINE\nV',title:'Abandon Freq.',event:'WORLD TOUR',venue:'Fabric · London',date:'22 FEB 2025',bg:'#08081a',tc:'#f0eeff',w:235,h:320,x:59,y:4,rot:4},
-  {artist:'MIDNIGHT\nCANAL',title:'Nacht Schicht Vol.2',event:'LISTENING SESSION',venue:'OHM · Berlin',date:'31 OCT 2024',bg:'#0a0e14',tc:'#e8ecf5',w:195,h:255,x:78,y:8,rot:-2},
-  {artist:'FALK\nDREHER',title:'Iron Garden',event:'LP PREMIERE',venue:'Tresor · Berlin',date:'14 DEC 2024',bg:'#101008',tc:'#f5f5e8',w:175,h:240,x:12,y:42,rot:6},
-  {artist:'SAiiLOR',title:'MAYBE',event:'MUSIC VIDEO',venue:'',date:'2025',bg:'#06060e',tc:'#fff',w:235,h:318,x:58,y:38,rot:-2.5,video:'mCms7kbPOdI'},
-];
 
 const SECTION_IDS = ['#hero','#releases','#posters','#artists','#contact'];
 
