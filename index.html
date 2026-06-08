@@ -561,6 +561,22 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 </head>
 <body>
 
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <filter id="flower-liquid" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix"
+        values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"
+        result="inverted"/>
+      <feGaussianBlur in="inverted" stdDeviation="6" result="blurred"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.007 0.01" numOctaves="3" seed="8" result="noise">
+        <animate attributeName="baseFrequency"
+          values="0.007 0.01;0.013 0.006;0.005 0.014;0.01 0.007;0.007 0.01"
+          dur="16s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="blurred" in2="noise" scale="24" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
 <div id="flash"></div>
 <div id="scroll-bar"></div>
 <div id="cursor"></div>
