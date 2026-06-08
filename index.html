@@ -462,38 +462,6 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
    SWAG LAYER
 ══════════════════════════════════ */
 
-/* ── GLITCH ON MAIN TITLE ─────────── */
-.hw-main{position:relative;overflow:visible}
-.hw-main::before,.hw-main::after{
-  content:attr(data-text);
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  font-family:var(--font-d);font-size:clamp(5rem,13vw,13.5rem);
-  line-height:.88;letter-spacing:-.01em;
-  pointer-events:none;white-space:nowrap;
-}
-.hw-main::before{
-  left:3px;color:rgba(255,255,255,.85);text-shadow:-3px 0 var(--red);
-  clip-path:inset(100% 0 0 0);
-  animation:glitch-a 12s infinite 2s;
-}
-.hw-main::after{
-  left:-3px;color:rgba(255,255,255,.85);text-shadow:3px 0 rgba(0,210,255,.5);
-  clip-path:inset(100% 0 0 0);
-  animation:glitch-b 12s infinite 2.2s;
-}
-@keyframes glitch-a{
-  0%,85%,100%{clip-path:inset(100% 0 0 0);transform:none}
-  87%{clip-path:inset(9% 0 70% 0);transform:skewX(-2deg)}
-  89%{clip-path:inset(58% 0 16% 0);transform:skewX(1.5deg)}
-  91%{clip-path:inset(100% 0 0 0);transform:none}
-}
-@keyframes glitch-b{
-  0%,85%,100%{clip-path:inset(100% 0 0 0);transform:none}
-  87%{clip-path:inset(40% 0 42% 0);transform:skewX(2deg)}
-  89%{clip-path:inset(75% 0 8% 0);transform:skewX(-1.5deg)}
-  91%{clip-path:inset(100% 0 0 0);transform:none}
-}
-
 /* ── TICKER ───────────────────────── */
 .ticker-wrap{
   overflow:hidden;border-top:1px solid rgba(255,255,255,.07);
