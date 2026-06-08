@@ -970,16 +970,19 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   }
   setTrackFill(0);
 
-  /* ── frequency bar RAF loop ── */
+  /* ── frequency bar RAF loop — updates every 4 frames (~15fps) ── */
+  let _barFrame=0;
   (function animBars(){
-    bars.forEach(b=>{
-      const noise=0.25+Math.random()*0.75;
-      const h=3+(90-3)*Math.pow(vizV,.65)*noise;
-      const intensity=0.08+vizV*0.72;
-      const red=vizV>0.55;
-      b.style.height=h+'%';
-      b.style.background=red?`rgba(196,30,58,${intensity})`:`rgba(255,255,255,${intensity})`;
-    });
+    if(++_barFrame%4===0){
+      bars.forEach(b=>{
+        const noise=0.25+Math.random()*0.75;
+        const h=3+(90-3)*Math.pow(vizV,.65)*noise;
+        const intensity=0.08+vizV*0.72;
+        const red=vizV>0.55;
+        b.style.height=h+'%';
+        b.style.background=red?`rgba(196,30,58,${intensity})`:`rgba(255,255,255,${intensity})`;
+      });
+    }
     requestAnimationFrame(animBars);
   })();
 
