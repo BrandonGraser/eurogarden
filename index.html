@@ -1197,8 +1197,8 @@ const scroll=(function(){
   const vs=`<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".4"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width=".8" opacity=".25"/><circle cx="12" cy="12" r="2.2" opacity=".4"/></svg>`;
   TRACKS.forEach((t,i)=>{
     const el=document.createElement('div');el.className='track'+(i===0?' active':'');el.dataset.id=t.id;
-    const defaultTag=t.isDefault?`<span class="track-default-tag">Default</span>`:'';
-    el.innerHTML=`<div class="track-bg-n">${t.n}</div><div class="track-n">${t.n}</div><div class="track-art"><div class="track-art-bg" id="tart-${t.id}" style="background:linear-gradient(135deg,${t.g1||'#0d0d1e'},${t.g2||'#16213e'})">${vs}</div></div><div class="track-info"><div class="track-title">${t.name}${defaultTag}</div><div class="track-meta">${t.album} · ${t.artist}</div></div><div class="track-dur">${t.dur}</div>`;
+    el.style.animationDelay=`${i*0.045}s`;
+    el.innerHTML=`<div class="track-bg-n">${t.n}</div><div class="track-n">${t.n}</div><div class="track-art"><div class="track-art-bg" id="tart-${t.id}" style="background:linear-gradient(135deg,${t.g1||'#0d0d1e'},${t.g2||'#16213e'})">${vs}</div></div><div class="track-info"><div class="track-title">${t.name}</div><div class="track-meta">${t.album} · ${t.artist}</div></div><div class="track-dur">${t.dur}</div>`;
     el.addEventListener('click',()=>window.loadTrack(t));
     g.appendChild(el);
     // async load cover art if available
