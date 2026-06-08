@@ -1089,7 +1089,7 @@ const SECTION_IDS = ['#hero','#releases','#posters','#artists','#contact'];
   const T=15;const tr=[];
   for(let i=0;i<T;i++){const d=document.createElement('div');d.className='c-trail';document.body.appendChild(d);tr.push({el:d,t:0});}
   let ti=0;
-  const sel='a,button,.vinyl-disc,.track,.ac,.poster-front,.form-btn,.hw-cta,.nd,input,textarea,select';
+  const sel='a,button,.vinyl-disc,.track,.ac,.form-btn,.hw-cta,.nd,input,textarea,select';
   document.addEventListener('mousemove',e=>{
     cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
     const t=tr[ti];t.el.style.left=e.clientX+'px';t.el.style.top=e.clientY+'px';
