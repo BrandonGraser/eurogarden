@@ -395,11 +395,6 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
 #ld-hd{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex-shrink:0;position:relative;z-index:1}
 .ld-logo-txt{font-family:var(--font-d);font-size:1.4rem;letter-spacing:.1em;color:var(--white)}
 .ld-sub-txt{font-family:var(--font-m);font-size:0.75rem;letter-spacing:.03em;color:rgba(255,255,255,.2);text-transform:uppercase}
-#ld-status{display:flex;align-items:center;gap:.55rem;margin-top:.3rem}
-.ld-status-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;transition:background .4s}
-.ld-status-dot.live{background:var(--red);box-shadow:0 0 6px rgba(196,30,58,.7);animation:status-pulse 1s ease-in-out infinite}
-@keyframes status-pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,.5)}50%{box-shadow:0 0 0 4px rgba(196,30,58,0)}}
-#ld-status-txt{font-family:var(--font-m);font-size:0.7rem;letter-spacing:.06em;color:rgba(255,255,255,.28);text-transform:uppercase;transition:color .4s}
 #ld-stage{
   display:flex;align-items:flex-end;justify-content:center;
   gap:clamp(1rem,4vw,5rem);flex:1;min-height:0;
