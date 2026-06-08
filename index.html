@@ -381,15 +381,29 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   display:flex;flex-direction:column;
   align-items:center;justify-content:space-between;
   padding:2.4rem 3rem 2.8rem;
-  pointer-events:auto;
+  pointer-events:auto;overflow:hidden;
 }
-#ld-hd{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex-shrink:0}
+#loader::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);
+}
+#ld-glow{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 75% 55% at 50% 56%,rgba(196,30,58,.18),transparent 70%);
+  opacity:0;transition:opacity .35s ease;
+}
+#ld-hd{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex-shrink:0;position:relative;z-index:1}
 .ld-logo-txt{font-family:var(--font-d);font-size:1.4rem;letter-spacing:.1em;color:var(--white)}
 .ld-sub-txt{font-family:var(--font-m);font-size:0.75rem;letter-spacing:.03em;color:rgba(255,255,255,.2);text-transform:uppercase}
+#ld-status{display:flex;align-items:center;gap:.55rem;margin-top:.3rem}
+.ld-status-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;transition:background .4s}
+.ld-status-dot.live{background:var(--red);box-shadow:0 0 6px rgba(196,30,58,.7);animation:status-pulse 1s ease-in-out infinite}
+@keyframes status-pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,30,58,.5)}50%{box-shadow:0 0 0 4px rgba(196,30,58,0)}}
+#ld-status-txt{font-family:var(--font-m);font-size:0.7rem;letter-spacing:.06em;color:rgba(255,255,255,.28);text-transform:uppercase;transition:color .4s}
 #ld-stage{
   display:flex;align-items:flex-end;justify-content:center;
-  gap:clamp(1.5rem,6vw,7rem);flex:1;min-height:0;
-  padding:.8rem 0;width:100%;
+  gap:clamp(1rem,4vw,5rem);flex:1;min-height:0;
+  padding:.8rem 0;width:100%;position:relative;z-index:1;
 }
 .spk{
   display:flex;align-items:flex-end;justify-content:center;
@@ -397,16 +411,26 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   transition:filter .12s linear;
 }
 .spk svg{height:100%;width:auto;max-height:65vh;display:block}
+/* ── FREQUENCY VISUALIZER ── */
+#ld-viz{
+  display:flex;align-items:flex-end;gap:2px;
+  width:clamp(55px,7vw,110px);align-self:stretch;
+  padding-bottom:1px;flex-shrink:0;
+}
+.ld-bar{
+  flex:1;height:4%;background:rgba(255,255,255,.09);
+  border-radius:1px 1px 0 0;will-change:height,background;
+}
 #ld-foot{
-  display:flex;flex-direction:column;align-items:center;gap:.9rem;
-  width:100%;max-width:700px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  width:100%;max-width:700px;flex-shrink:0;position:relative;z-index:1;
 }
 #ld-cue{
   font-family:var(--font-m);font-size:0.85rem;letter-spacing:.03em;
-  color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center;
+  color:rgba(255,255,255,.45);text-transform:uppercase;text-align:center;
   animation:ldBlink 2s ease-in-out infinite;
 }
-@keyframes ldBlink{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes ldBlink{0%,100%{opacity:.4}50%{opacity:.9}}
 #ld-slider-row{display:flex;align-items:center;gap:1rem;width:100%}
 .ld-edge{font-family:var(--font-m);font-size:0.75rem;color:rgba(255,255,255,.22);letter-spacing:.02em;white-space:nowrap}
 #ld-track-wrap{flex:1;position:relative}
@@ -422,18 +446,17 @@ nav.solid{background:rgba(0,0,0,.88);backdrop-filter:blur(12px);border-bottom-co
   width:22px;height:22px;border-radius:50%;
   background:var(--white);cursor:ew-resize;
   box-shadow:0 0 18px rgba(255,255,255,.55);
-  transition:box-shadow .15s,transform .15s;
+  transition:box-shadow .15s,transform .15s,background .3s;
 }
-#volSlider:active::-webkit-slider-thumb{transform:scale(1.3);box-shadow:0 0 28px rgba(255,255,255,.7)}
+#volSlider:active::-webkit-slider-thumb{transform:scale(1.3)}
 #volSlider::-moz-range-thumb{
   width:22px;height:22px;border-radius:50%;border:none;
   background:var(--white);cursor:ew-resize;
-  box-shadow:0 0 18px rgba(255,255,255,.55);
 }
 #ld-pct{
   font-family:var(--font-d);font-size:4.5rem;letter-spacing:.04em;
   color:var(--white);text-align:center;line-height:1;
-  transition:color .3s;
+  transition:color .4s ease;
 }
 #ld-pct .ld-pct-sym{font-size:2rem;opacity:.38}
 
